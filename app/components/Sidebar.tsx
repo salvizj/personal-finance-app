@@ -1,6 +1,5 @@
 import type { Theme } from "~/types/types"
 import { ThemeToggler } from "./ThemeToggler"
-import { useEffect, useState } from "react"
 import { House, PiggyBank, ReceiptEuro, Wallet } from "lucide-react"
 import { NavLink } from "react-router"
 
@@ -19,7 +18,7 @@ const ROUTES = [
 export const Sidebar = ({ themeToggle, theme }: SidebarProps) => {
 	return (
 		<>
-			<aside className="hidden md:flex flex-col justify-between w-64 h-screen fixed bg-surface-secondary border-r border-border p-6">
+			<aside className="hidden md:flex flex-col justify-between w-64 h-screen  bg-surface-secondary border-r border-border p-6">
 				<div>
 					<h2 className="text-lg font-bold text-content">Finance App</h2>
 					<nav className="mt-8">
