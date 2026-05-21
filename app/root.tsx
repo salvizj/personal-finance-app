@@ -61,11 +61,13 @@ export default function App() {
 		<div className="min-h-screen bg-surface text-content flex flex-col">
 			<div className="flex grow">
 				<Sidebar theme={theme} themeToggle={themeToggle} />
-				<main className="grow px-6 pt-10">
-					<Outlet />
-				</main>
+				<div className="flex flex-col grow">
+					<main className="grow px-6 pt-10 flex flex-col">
+						<Outlet />
+					</main>
+					<Footer />
+				</div>
 			</div>
-			<Footer />
 		</div>
 	)
 }

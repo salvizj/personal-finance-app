@@ -15,7 +15,7 @@ const ROUTES = [
 	{ path: "/reports", label: "Reports", icon: <Wallet /> },
 ]
 
-export const Sidebar = ({ themeToggle, theme }: SidebarProps) => {
+export const Sidebar = ({ themeToggle }: SidebarProps) => {
 	return (
 		<>
 			<aside className="hidden md:flex flex-col justify-between w-64 h-screen  bg-surface-secondary border-r border-border p-6">
@@ -29,7 +29,7 @@ export const Sidebar = ({ themeToggle, theme }: SidebarProps) => {
 										to={route.path}
 										className={({ isActive }) =>
 											`flex items-center gap-3 px-3 py-2 rounded-lg transition-colors ${
-												isActive ? "bg-primary" : " hover:bg-surface-elevated"
+												isActive ? "text-primary" : "text-content-muted"
 											}`
 										}
 									>
