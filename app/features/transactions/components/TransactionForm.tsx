@@ -4,42 +4,22 @@ import Input from "~/components/ui/Input"
 import Modal from "~/components/ui/Modal"
 import Select from "~/components/ui/Select"
 import { transactionSchema } from "~/schemas/transactionSchema"
+import { CATEGORIES, TYPES } from "../constants/constants"
+import { removeNonDigit } from "~/components/utils/utils"
 
 type TransactionFormProps = {
 	isOpen: boolean
 	onClose: () => void
 	onSubmit: (data: transactionSchema) => void
 }
-const CATEGORIES = [
-	// Income
-	{ value: "salary", label: "Salary" },
-	{ value: "freelance", label: "Freelance" },
-	{ value: "investment", label: "Investment" },
 
-	// Essentials
-	{ value: "groceries", label: "Groceries" },
-	{ value: "housing", label: "Housing" },
-	{ value: "utilities", label: "Utilities" },
-	{ value: "transportation", label: "Transportation" },
-	{ value: "health", label: "Health" },
-
-	// Lifestyle
-	{ value: "food", label: "Food & Dining" },
-	{ value: "entertainment", label: "Entertainment" },
-	{ value: "shopping", label: "Shopping" },
-	{ value: "subscriptions", label: "Subscriptions" },
-	{ value: "travel", label: "Travel" },
-	{ value: "education", label: "Education" },
-
-	{ value: "other", label: "Other" },
-]
 const TransactionForm = ({
 	isOpen,
 	onClose,
 	onSubmit,
 }: TransactionFormProps) => {
 	const [title, setTitle] = useState("")
-	const [amount, setAmount] = useState(0)
+	const [amount, setAmount] = useState("")
 	const [type, setType] = useState("")
 	const [category, setCategory] = useState("")
 	const [date, setDate] = useState("")
@@ -87,15 +67,12 @@ const TransactionForm = ({
 					label="Amount"
 					required={true}
 					value={amount}
-					onChange={(e) => setAmount(parseFloat(e.target.value))}
+					onChange={(e) => setAmount(removeNonDigit(e.target.value))}
 					error={validationErrors.amount}
 				/>
 				<Select
 					placeholder="Type"
-					options={[
-						{ value: "income", label: "Income" },
-						{ value: "expense", label: "Expense" },
-					]}
+					options={TYPES}
 					label={"Type"}
 					value={type}
 					onChange={(e) => setType(e.target.value)}

@@ -3,6 +3,7 @@ import type { ReactNode } from "react"
 type Column<T> = {
 	header: string
 	key: keyof T
+	order?: boolean
 }
 
 type TableProps<T> = {

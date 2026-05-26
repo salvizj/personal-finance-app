@@ -5,7 +5,8 @@ import Button from "~/components/ui/Button"
 import type { transactionSchema } from "~/schemas/transactionSchema"
 import { useLocalStorage } from "~/hooks/useLocalStorage"
 import Table from "~/components/ui/Table"
-import type { Column } from "~/types/types"
+import type { Column, FilterData } from "~/types/types"
+import FilterForm from "~/features/transactions/components/FilterForm"
 
 const transactionColumns: Column<{
 	title: string
@@ -28,24 +29,41 @@ export function meta({}: Route.MetaArgs) {
 }
 
 export default function Transactions() {
-	const [isOpen, setIsOpen] = useState(false)
+	const [transactionFormIsOpem, setTransactionFormIsOpen] = useState(false)
+	const [filterFormIsOpen, setFilterFormIsOpen] = useState(false)
 	const { storedValue, setValue, removeValue } =
 		useLocalStorage<transactionSchema>("transactions")
 
-	const handleFormSubmit = (data: transactionSchema) => {
+	const handleTransactionFormSubmit = (data: transactionSchema) => {
 		setValue(data)
-		setIsOpen(false)
+		setTransactionFormIsOpen(false)
+	}
+
+	const handleFilterFormSubmit = (data: FilterData) => {
+		setFilterFormIsOpen(false)
 	}
 
 	return (
 		<>
-			{!isOpen && (
-				<Button onClick={() => setIsOpen(true)}>Add Transaction</Button>
-			)}
+			<div className="w-48 mb-8 flex flex-col gap-4">
+				{!transactionFormIsOpem && (
+					<Button onClick={() => setTransactionFormIsOpen(true)}>
+						Add Transaction
+					</Button>
+				)}
+				{!filterFormIsOpen && (
+					<Button onClick={() => setFilterFormIsOpen(true)}>Filter</Button>
+				)}
+			</div>
 			<TransactionForm
-				isOpen={isOpen}
-				onClose={() => setIsOpen(false)}
-				onSubmit={handleFormSubmit}
+				isOpen={transactionFormIsOpem}
+				onClose={() => setTransactionFormIsOpen(false)}
+				onSubmit={handleTransactionFormSubmit}
+			/>
+			<FilterForm
+				isOpen={filterFormIsOpen}
+				onClose={() => setFilterFormIsOpen(false)}
+				onSubmit={handleFilterFormSubmit}
 			/>
 			<Table data={storedValue} columns={transactionColumns} />
 		</>

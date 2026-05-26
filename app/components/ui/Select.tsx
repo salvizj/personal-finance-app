@@ -1,12 +1,7 @@
-type Option = {
-	value: string
-	label: string
-}
-
 type SelectProps = {
 	label: string
 	error?: string
-	options: Option[]
+	options: string[]
 	placeholder: string
 	value: string | number
 	onChange: (e: React.ChangeEvent<HTMLSelectElement>) => void
@@ -49,8 +44,8 @@ const Select = ({
 					</option>
 				)}
 				{options.map((opt) => (
-					<option key={opt.value} value={opt.value}>
-						{opt.label}
+					<option key={opt} value={opt}>
+						<span className="capitalize">{opt}</span>
 					</option>
 				))}
 			</select>
