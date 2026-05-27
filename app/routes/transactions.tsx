@@ -33,15 +33,19 @@ export default function Transactions() {
 
 	return (
 		<>
-			<div className="w-48 mb-8 flex flex-col gap-4">
-				{!transactionFormIsOpem && (
+			<div className="flex items-center justify-between mb-8">
+				<h1 className="text-xl font-semibold">Transactions</h1>
+				<div className="flex gap-2">
+					<Button variant="outline" onClick={() => setFilterFormIsOpen(true)}>
+						Filter
+					</Button>
+					<Button variant="outline" onClick={() => setFilters(null)}>
+						Clear filters
+					</Button>
 					<Button onClick={() => setTransactionFormIsOpen(true)}>
 						Add Transaction
 					</Button>
-				)}
-				{!filterFormIsOpen && (
-					<Button onClick={() => setFilterFormIsOpen(true)}>Filter</Button>
-				)}
+				</div>
 			</div>
 			<TransactionForm
 				isOpen={transactionFormIsOpem}

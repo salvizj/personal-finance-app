@@ -12,13 +12,17 @@ export const useFilterTransactions = (
 	const minAmount = searchParams.get("minAmount")
 	const maxAmount = searchParams.get("maxAmount")
 
-	const setFilters = (data: FilterData) => {
+	const setFilters = (data: FilterData | null) => {
 		const params = new URLSearchParams()
-		if (data.type) params.set("type", data.type)
-		if (data.category) params.set("category", data.category)
-		if (data.minAmount) params.set("minAmount", data.minAmount)
-		if (data.maxAmount) params.set("maxAmount", data.maxAmount)
-		setSearchParams(params)
+		if (data != null) {
+			if (data.type) params.set("type", data.type)
+			if (data.category) params.set("category", data.category)
+			if (data.minAmount) params.set("minAmount", data.minAmount)
+			if (data.maxAmount) params.set("maxAmount", data.maxAmount)
+			setSearchParams(params)
+		} else {
+			setSearchParams({})
+		}
 	}
 
 	const filteredData =
