@@ -17,14 +17,11 @@ export function meta({}: Route.MetaArgs) {
 
 export default function Transactions() {
 	const [transactionFormIsOpem, setTransactionFormIsOpen] = useState(false)
-	const [search, setSearch] = useState("")
 	const [filterFormIsOpen, setFilterFormIsOpen] = useState(false)
 	const { storedValue, setValue, removeValue } =
 		useLocalStorage<transactionSchema>("transactions")
-	const { filteredData, setFilters } = useFilterTransactions(
-		storedValue,
-		search,
-	)
+	const { filteredData, setFilters, setSearch, search } =
+		useFilterTransactions(storedValue)
 	const handleTransactionFormSubmit = (data: transactionSchema) => {
 		setValue(data)
 		setTransactionFormIsOpen(false)
@@ -54,7 +51,7 @@ export default function Transactions() {
 					<Input
 						type={"text"}
 						placeholder={"Search"}
-						value={search}
+						value={search ? search : ""}
 						onChange={(e) => setSearch(e.target.value)}
 					/>
 				</div>

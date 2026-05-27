@@ -4,7 +4,6 @@ import type { FilterData } from "~/types/types"
 
 export const useFilterTransactions = (
 	transactions: transactionSchema[] | null,
-	search: string,
 ) => {
 	const [searchParams, setSearchParams] = useSearchParams()
 
@@ -12,19 +11,35 @@ export const useFilterTransactions = (
 	const category = searchParams.get("category")
 	const minAmount = searchParams.get("minAmount")
 	const maxAmount = searchParams.get("maxAmount")
+	const search = searchParams.get("search")
 
 	const setFilters = (data: FilterData | null) => {
-		const params = new URLSearchParams()
-		if (data != null) {
-			if (data.type) params.set("type", data.type)
-			if (data.category) params.set("category", data.category)
-			if (data.minAmount) params.set("minAmount", data.minAmount)
-			if (data.maxAmount) params.set("maxAmount", data.maxAmount)
-			if (search != "") params.set("search", search)
-			setSearchParams(params)
-		} else {
+		if (data === null) {
 			setSearchParams({})
+			return
 		}
+
+		const params = new URLSearchParams(searchParams)
+
+		if (data.type) params.set("type", data.type)
+		else params.delete("type")
+
+		if (data.category) params.set("category", data.category)
+		else params.delete("category")
+
+		if (data.minAmount) params.set("minAmount", data.minAmount)
+		else params.delete("minAmount")
+
+		if (data.maxAmount) params.set("maxAmount", data.maxAmount)
+		else params.delete("maxAmount")
+		setSearchParams(params)
+	}
+
+	const setSearch = (value: string) => {
+		const params = new URLSearchParams(searchParams)
+		if (value) params.set("search", value)
+		else params.delete("search")
+		setSearchParams(params)
 	}
 
 	const filteredData =
@@ -38,5 +53,5 @@ export const useFilterTransactions = (
 			return true
 		}) ?? null
 
-	return { filteredData, setFilters }
+	return { filteredData, setFilters, setSearch, search }
 }
