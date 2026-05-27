@@ -1,6 +1,6 @@
 import TransactionForm from "~/features/transactions/components/TransactionForm"
 import type { Route } from "./+types/transactions"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import Button from "~/components/ui/Button"
 import type { transactionSchema } from "~/schemas/transactionSchema"
 import { useLocalStorage } from "~/hooks/useLocalStorage"
@@ -9,6 +9,7 @@ import type { FilterData } from "~/types/types"
 import FilterForm from "~/features/transactions/components/FilterForm"
 import { TABLE_COLUMNS } from "~/features/transactions/constants/constants"
 import { useFilterTransactions } from "~/features/transactions/hooks/useFiltertTransactions"
+import Input from "~/components/ui/Input"
 
 export function meta({}: Route.MetaArgs) {
 	return [{ title: "Personal Finance App" }, { name: "", content: "" }]
@@ -16,11 +17,14 @@ export function meta({}: Route.MetaArgs) {
 
 export default function Transactions() {
 	const [transactionFormIsOpem, setTransactionFormIsOpen] = useState(false)
+	const [search, setSearch] = useState("")
 	const [filterFormIsOpen, setFilterFormIsOpen] = useState(false)
 	const { storedValue, setValue, removeValue } =
 		useLocalStorage<transactionSchema>("transactions")
-	const { filteredData, setFilters } = useFilterTransactions(storedValue)
-
+	const { filteredData, setFilters } = useFilterTransactions(
+		storedValue,
+		search,
+	)
 	const handleTransactionFormSubmit = (data: transactionSchema) => {
 		setValue(data)
 		setTransactionFormIsOpen(false)
@@ -33,7 +37,7 @@ export default function Transactions() {
 
 	return (
 		<>
-			<div className="flex items-center justify-between mb-8">
+			<div className="flex justify-between mb-8 flex-col md:flex-row gap-4">
 				<h1 className="text-xl font-semibold">Transactions</h1>
 				<div className="flex gap-2">
 					<Button variant="outline" onClick={() => setFilterFormIsOpen(true)}>
@@ -45,6 +49,14 @@ export default function Transactions() {
 					<Button onClick={() => setTransactionFormIsOpen(true)}>
 						Add Transaction
 					</Button>
+				</div>
+				<div>
+					<Input
+						type={"text"}
+						placeholder={"Search"}
+						value={search}
+						onChange={(e) => setSearch(e.target.value)}
+					/>
 				</div>
 			</div>
 			<TransactionForm

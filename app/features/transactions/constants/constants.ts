@@ -20,6 +20,7 @@ export const CATEGORIES = [
 ]
 export const TYPES = ["income", "expense"]
 export const TABLE_COLUMNS = [
+	"title",
 	"type",
 	"category",
 	"amount",

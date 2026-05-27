@@ -4,6 +4,7 @@ import type { FilterData } from "~/types/types"
 
 export const useFilterTransactions = (
 	transactions: transactionSchema[] | null,
+	search: string,
 ) => {
 	const [searchParams, setSearchParams] = useSearchParams()
 
@@ -19,6 +20,7 @@ export const useFilterTransactions = (
 			if (data.category) params.set("category", data.category)
 			if (data.minAmount) params.set("minAmount", data.minAmount)
 			if (data.maxAmount) params.set("maxAmount", data.maxAmount)
+			if (search != "") params.set("search", search)
 			setSearchParams(params)
 		} else {
 			setSearchParams({})
@@ -31,6 +33,8 @@ export const useFilterTransactions = (
 			if (category && t.category !== category) return false
 			if (minAmount && t.amount < Number(minAmount)) return false
 			if (maxAmount && t.amount > Number(maxAmount)) return false
+			if (search && !t.title.toLowerCase().includes(search.toLowerCase()))
+				return false
 			return true
 		}) ?? null
 

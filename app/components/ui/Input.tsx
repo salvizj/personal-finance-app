@@ -1,5 +1,5 @@
 type InputProps = {
-	label: string
+	label?: string
 	error?: string
 	type: string
 	placeholder: string

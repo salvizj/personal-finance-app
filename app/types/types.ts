@@ -16,4 +16,5 @@ export type FilterData = {
 	category?: Category | ""
 	minAmount?: string
 	maxAmount?: string
+	search?: string
 }
