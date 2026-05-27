@@ -19,3 +19,10 @@ export const CATEGORIES = [
 	"other",
 ]
 export const TYPES = ["income", "expense"]
+export const TABLE_COLUMNS = [
+	"type",
+	"category",
+	"amount",
+	"date",
+	"note",
+] as const

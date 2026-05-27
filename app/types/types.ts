@@ -12,8 +12,8 @@ export type Category = (typeof CATEGORIES)[number]
 export type Type = (typeof TYPES)[number]
 
 export type FilterData = {
-	type: Type | ""
-	category: Category | ""
-	minAmount: string
-	maxAmount: string
+	type?: Type | ""
+	category?: Category | ""
+	minAmount?: string
+	maxAmount?: string
 }

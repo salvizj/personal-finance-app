@@ -1,15 +1,16 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 
 export function useLocalStorage<T>(key: string) {
-	const [storedValue, setStoredValue] = useState<T[] | null>(() => {
+	const [storedValue, setStoredValue] = useState<T[] | null>(null)
+
+	useEffect(() => {
 		try {
 			const item = localStorage.getItem(key)
-			return item ? (JSON.parse(item) as T[]) : null
+			setStoredValue(item ? (JSON.parse(item) as T[]) : null)
 		} catch (error) {
 			console.error(error)
-			return null
 		}
-	})
+	}, [key])
 
 	const setValue = (value: T) => {
 		try {

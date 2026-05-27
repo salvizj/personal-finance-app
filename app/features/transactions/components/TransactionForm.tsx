@@ -5,7 +5,7 @@ import Modal from "~/components/ui/Modal"
 import Select from "~/components/ui/Select"
 import { transactionSchema } from "~/schemas/transactionSchema"
 import { CATEGORIES, TYPES } from "../constants/constants"
-import { removeNonDigit } from "~/components/utils/utils"
+import { removeNonDigit } from "~/utils/utils"
 
 type TransactionFormProps = {
 	isOpen: boolean

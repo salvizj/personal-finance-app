@@ -5,24 +5,10 @@ import Button from "~/components/ui/Button"
 import type { transactionSchema } from "~/schemas/transactionSchema"
 import { useLocalStorage } from "~/hooks/useLocalStorage"
 import Table from "~/components/ui/Table"
-import type { Column, FilterData } from "~/types/types"
+import type { FilterData } from "~/types/types"
 import FilterForm from "~/features/transactions/components/FilterForm"
-
-const transactionColumns: Column<{
-	title: string
-	amount: number
-	type: "income" | "expense"
-	category: string
-	date: string
-	note?: string
-}>[] = [
-	{ header: "Title", key: "title" },
-	{ header: "Amount", key: "amount" },
-	{ header: "Type", key: "type" },
-	{ header: "Category", key: "category" },
-	{ header: "Date", key: "date" },
-	{ header: "Note", key: "note" },
-]
+import { TABLE_COLUMNS } from "~/features/transactions/constants/constants"
+import { useFilterTransactions } from "~/features/transactions/hooks/useFiltertTransactions"
 
 export function meta({}: Route.MetaArgs) {
 	return [{ title: "Personal Finance App" }, { name: "", content: "" }]
@@ -33,6 +19,7 @@ export default function Transactions() {
 	const [filterFormIsOpen, setFilterFormIsOpen] = useState(false)
 	const { storedValue, setValue, removeValue } =
 		useLocalStorage<transactionSchema>("transactions")
+	const { filteredData, setFilters } = useFilterTransactions(storedValue)
 
 	const handleTransactionFormSubmit = (data: transactionSchema) => {
 		setValue(data)
@@ -41,6 +28,7 @@ export default function Transactions() {
 
 	const handleFilterFormSubmit = (data: FilterData) => {
 		setFilterFormIsOpen(false)
+		setFilters(data)
 	}
 
 	return (
@@ -65,7 +53,7 @@ export default function Transactions() {
 				onClose={() => setFilterFormIsOpen(false)}
 				onSubmit={handleFilterFormSubmit}
 			/>
-			<Table data={storedValue} columns={transactionColumns} />
+			<Table data={filteredData} columns={TABLE_COLUMNS} />
 		</>
 	)
 }

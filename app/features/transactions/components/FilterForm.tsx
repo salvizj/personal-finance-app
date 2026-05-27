@@ -2,7 +2,7 @@ import { useState } from "react"
 import Input from "~/components/ui/Input"
 import Select from "~/components/ui/Select"
 import { CATEGORIES, TYPES } from "../constants/constants"
-import { removeNonDigit } from "~/components/utils/utils"
+import { removeNonDigit } from "~/utils/utils"
 import Modal from "~/components/ui/Modal"
 import type { FilterData } from "~/types/types"
 import Button from "~/components/ui/Button"
@@ -22,7 +22,13 @@ const FilterForm = ({ isOpen, onClose, onSubmit }: FilterFormProps) => {
 	return (
 		<>
 			<Modal isOpen={isOpen} onClose={onClose} title="Filter">
-				<form className="flex flex-col gap-4">
+				<form
+					className="flex flex-col gap-4"
+					onSubmit={(e) => {
+						e.preventDefault()
+						onSubmit({ type, category, minAmount, maxAmount })
+					}}
+				>
 					<Select
 						placeholder="Type"
 						options={TYPES}

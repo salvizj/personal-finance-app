@@ -44,8 +44,8 @@ const Select = ({
 					</option>
 				)}
 				{options.map((opt) => (
-					<option key={opt} value={opt}>
-						<span className="capitalize">{opt}</span>
+					<option key={opt} value={opt} className="capitalize">
+						{opt}
 					</option>
 				))}
 			</select>

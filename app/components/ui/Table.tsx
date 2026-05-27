@@ -1,40 +1,44 @@
-import type { ReactNode } from "react"
-
-type Column<T> = {
-	header: string
-	key: keyof T
-	order?: boolean
-}
-
-type TableProps<T> = {
+type TableProps<T extends Record<string, string | number>> = {
 	data: T[] | null
-	columns: Column<T>[]
+	columns: readonly (keyof T)[]
 }
 
-const Table = <T,>({ data, columns }: TableProps<T>) => {
-	const safeData = data ?? []
+const Table = <T extends Record<string, string | number>>({
+	data,
+	columns,
+}: TableProps<T>) => {
+	if (data === null) {
+		return (
+			<div>
+				<h2>No transaction added yet</h2>
+			</div>
+		)
+	}
 
 	return (
-		<div className="overflow-x-auto w-full">
+		<div>
 			<table className="min-w-full border-collapse">
 				<thead>
 					<tr className="bg-surface-secondary border-b border-border text-left">
 						{columns.map((col, i) => (
-							<th key={i} className="py-3 px-4 font-semibold text-content">
-								{col.header}
+							<th
+								key={i}
+								className="py-3 px-4 font-semibold text-content capitalize"
+							>
+								{String(col)}
 							</th>
 						))}
 					</tr>
 				</thead>
 
 				<tbody>
-					{safeData.map((row, rowIndex) => (
+					{data.map((row, rowIndex) => (
 						<tr
 							key={rowIndex}
 							className="bg-surface border-b border-border hover:bg-surface-elevated transition-colors"
 						>
 							{columns.map((col, colIndex) => {
-								const value = row[col.key]
+								const value = row[col]
 								return (
 									<td
 										key={colIndex}
@@ -47,7 +51,7 @@ const Table = <T,>({ data, columns }: TableProps<T>) => {
 						</tr>
 					))}
 
-					{safeData.length === 0 && (
+					{data.length === 0 && (
 						<tr>
 							<td
 								colSpan={columns.length}

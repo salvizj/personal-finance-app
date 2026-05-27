@@ -58,7 +58,7 @@ export default function App() {
 	const { theme, themeToggle } = useTheme(initialTheme)
 
 	return (
-		<div className="min-h-screen bg-surface text-content flex flex-col">
+		<div className="min-h-screen bg-surface text-content">
 			<div className="flex grow">
 				<Sidebar theme={theme} themeToggle={themeToggle} />
 				<div className="flex flex-col grow">
