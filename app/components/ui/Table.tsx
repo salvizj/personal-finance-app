@@ -1,11 +1,22 @@
+import type { Variant } from "~/types/types"
+import Button from "./Button"
+
+type Action<T extends Record<string, string | number>> = {
+	label: string
+	onClick: (row: T) => void
+	variant?: Variant
+}
+
 type TableProps<T extends Record<string, string | number>> = {
 	data: T[] | null
 	columns: readonly (keyof T)[]
+	actions?: Action<T>[]
 }
 
 const Table = <T extends Record<string, string | number>>({
 	data,
 	columns,
+	actions,
 }: TableProps<T>) => {
 	if (data === null) {
 		return (
@@ -28,6 +39,9 @@ const Table = <T extends Record<string, string | number>>({
 								{String(col)}
 							</th>
 						))}
+						{actions && (
+							<th className="py-3 px-4 font-semibold text-content">Actions</th>
+						)}
 					</tr>
 				</thead>
 
@@ -48,19 +62,21 @@ const Table = <T extends Record<string, string | number>>({
 									</td>
 								)
 							})}
+							{actions && (
+								<td className="flex gap-2">
+									{actions.map((action, k) => (
+										<Button
+											key={k}
+											variant={action.variant ?? "primary"}
+											onClick={() => action.onClick(row)}
+										>
+											{action.label}
+										</Button>
+									))}
+								</td>
+							)}
 						</tr>
 					))}
-
-					{data.length === 0 && (
-						<tr>
-							<td
-								colSpan={columns.length}
-								className="py-8 text-center text-content-muted"
-							>
-								No transactions found
-							</td>
-						</tr>
-					)}
 				</tbody>
 			</table>
 		</div>

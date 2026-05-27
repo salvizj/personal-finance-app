@@ -18,3 +18,10 @@ export type FilterData = {
 	maxAmount?: string
 	search?: string
 }
+export type Variant =
+	| "primary"
+	| "secondary"
+	| "accent"
+	| "outline"
+	| "ghost"
+	| "danger"

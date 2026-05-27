@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import Button from "~/components/ui/Button"
 import Input from "~/components/ui/Input"
 import Modal from "~/components/ui/Modal"
@@ -11,12 +11,14 @@ type TransactionFormProps = {
 	isOpen: boolean
 	onClose: () => void
 	onSubmit: (data: transactionSchema) => void
+	editTransactionData?: transactionSchema | null
 }
 
 const TransactionForm = ({
 	isOpen,
 	onClose,
 	onSubmit,
+	editTransactionData,
 }: TransactionFormProps) => {
 	const [title, setTitle] = useState("")
 	const [amount, setAmount] = useState("")
@@ -48,6 +50,17 @@ const TransactionForm = ({
 		setValidationErrors({})
 		onSubmit(result.data)
 	}
+
+	useEffect(() => {
+		if (editTransactionData) {
+			setTitle(editTransactionData.title)
+			setType(editTransactionData.type)
+			setAmount(String(editTransactionData.amount))
+			setCategory(editTransactionData.category)
+			setDate(editTransactionData.date)
+			setNote(editTransactionData.note ?? "")
+		}
+	}, [editTransactionData])
 
 	return (
 		<Modal isOpen={isOpen} onClose={onClose} title="Add Transaction">
@@ -105,7 +118,9 @@ const TransactionForm = ({
 					onChange={(e) => setNote(e.target.value)}
 					error={validationErrors.note}
 				/>
-				<Button type="submit">Add Transaction</Button>
+				<Button type="submit">
+					{editTransactionData ? "Edit Transaction" : "Add Transaction"}
+				</Button>
 			</form>
 		</Modal>
 	)

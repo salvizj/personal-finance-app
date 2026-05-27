@@ -21,11 +21,29 @@ export function useLocalStorage<T>(key: string) {
 			console.error(error)
 		}
 	}
-
-	const removeValue = () => {
-		localStorage.removeItem(key)
-		setStoredValue(null)
+	const updateValue = (value: T, oldValue: T) => {
+		try {
+			const updated = (storedValue ?? []).map((item) =>
+				JSON.stringify(item) === JSON.stringify(oldValue) ? value : item,
+			)
+			setStoredValue(updated)
+			localStorage.setItem(key, JSON.stringify(updated))
+		} catch (error) {
+			console.error(error)
+		}
 	}
 
-	return { storedValue, setValue, removeValue }
+	const deleteValue = (value: T) => {
+		try {
+			const deleted = (storedValue ?? []).filter(
+				(item) => JSON.stringify(item) !== JSON.stringify(value),
+			)
+			setStoredValue(deleted)
+			localStorage.setItem(key, JSON.stringify(deleted))
+		} catch (error) {
+			console.error(error)
+		}
+	}
+
+	return { storedValue, setValue, deleteValue, updateValue }
 }

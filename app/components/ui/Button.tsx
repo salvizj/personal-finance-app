@@ -1,7 +1,8 @@
 import type { ReactNode } from "react"
+import type { Variant } from "~/types/types"
 
 type ButtonProps = {
-	variant?: "primary" | "secondary" | "accent" | "outline" | "ghost" | "danger"
+	variant?: Variant
 	children?: ReactNode
 	type?: "button" | "submit"
 	onClick?: () => void

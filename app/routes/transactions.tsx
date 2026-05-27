@@ -9,64 +9,101 @@ import type { FilterData } from "~/types/types"
 import FilterForm from "~/features/transactions/components/FilterForm"
 import { TABLE_COLUMNS } from "~/features/transactions/constants/constants"
 import { useFilterTransactions } from "~/features/transactions/hooks/useFiltertTransactions"
-import Input from "~/components/ui/Input"
+import SearchInput from "~/features/transactions/components/SearchInput"
+import TransactionActions from "~/features/transactions/components/TransactionActions"
+import ConfirmDialog from "~/components/ConfirmDialog"
 
 export function meta({}: Route.MetaArgs) {
 	return [{ title: "Personal Finance App" }, { name: "", content: "" }]
 }
 
 export default function Transactions() {
-	const [transactionFormIsOpem, setTransactionFormIsOpen] = useState(false)
-	const [filterFormIsOpen, setFilterFormIsOpen] = useState(false)
-	const { storedValue, setValue, removeValue } =
+	const [iSTrransactionFormIsOpem, setIsTransactionFormIsOpen] = useState(false)
+	const [IsFilterFormIsOpen, setIsFilterFormIsOpen] = useState(false)
+	const [IsConfirmOpen, setIsConfirmOpen] = useState(false)
+
+	const [editingTransaction, setEdittingTransaction] =
+		useState<transactionSchema | null>(null)
+	const [deletingTransaction, setDeletingTransaction] =
+		useState<transactionSchema | null>(null)
+
+	const { storedValue, setValue, deleteValue, updateValue } =
 		useLocalStorage<transactionSchema>("transactions")
 	const { filteredData, setFilters, setSearch, search } =
 		useFilterTransactions(storedValue)
+
 	const handleTransactionFormSubmit = (data: transactionSchema) => {
-		setValue(data)
-		setTransactionFormIsOpen(false)
+		if (editingTransaction != null) {
+			updateValue(data, editingTransaction)
+		} else {
+			setValue(data)
+		}
+
+		setIsTransactionFormIsOpen(false)
+	}
+
+	const handleTransationDeletion = () => {
+		if (IsConfirmOpen && deletingTransaction != null) {
+			deleteValue(deletingTransaction)
+		}
 	}
 
 	const handleFilterFormSubmit = (data: FilterData) => {
-		setFilterFormIsOpen(false)
+		setIsFilterFormIsOpen(false)
 		setFilters(data)
+	}
+
+	const initiateDeleteTransaction = (row: transactionSchema) => {
+		setIsConfirmOpen(true)
+		setDeletingTransaction(row)
+		console.log("initiate")
+	}
+
+	const initiateEditTransaction = (row: transactionSchema) => {
+		setIsTransactionFormIsOpen(true)
+		setEdittingTransaction(row)
 	}
 
 	return (
 		<>
 			<div className="flex justify-between mb-8 flex-col md:flex-row gap-4">
 				<h1 className="text-xl font-semibold">Transactions</h1>
-				<div className="flex gap-2">
-					<Button variant="outline" onClick={() => setFilterFormIsOpen(true)}>
-						Filter
-					</Button>
-					<Button variant="outline" onClick={() => setFilters(null)}>
-						Clear filters
-					</Button>
-					<Button onClick={() => setTransactionFormIsOpen(true)}>
-						Add Transaction
-					</Button>
-				</div>
-				<div>
-					<Input
-						type={"text"}
-						placeholder={"Search"}
-						value={search ? search : ""}
-						onChange={(e) => setSearch(e.target.value)}
-					/>
-				</div>
+				<TransactionActions
+					onFilter={() => setIsFilterFormIsOpen(true)}
+					onClearFilters={() => setFilters(null)}
+					onAddTransaction={() => setIsTransactionFormIsOpen(true)}
+				/>
+				<SearchInput search={search} setSearch={setSearch} />
 			</div>
 			<TransactionForm
-				isOpen={transactionFormIsOpem}
-				onClose={() => setTransactionFormIsOpen(false)}
+				isOpen={iSTrransactionFormIsOpem}
+				onClose={() => setIsTransactionFormIsOpen(false)}
 				onSubmit={handleTransactionFormSubmit}
+				editTransactionData={editingTransaction}
 			/>
 			<FilterForm
-				isOpen={filterFormIsOpen}
-				onClose={() => setFilterFormIsOpen(false)}
+				isOpen={IsFilterFormIsOpen}
+				onClose={() => setIsFilterFormIsOpen(false)}
 				onSubmit={handleFilterFormSubmit}
 			/>
-			<Table data={filteredData} columns={TABLE_COLUMNS} />
+			<ConfirmDialog
+				isOpen={IsConfirmOpen}
+				onClose={() => setIsConfirmOpen(false)}
+				onConfirm={handleTransationDeletion}
+				message="This transaction will be permanently deleted."
+			/>
+			<Table
+				data={filteredData}
+				columns={TABLE_COLUMNS}
+				actions={[
+					{ label: "Edit", onClick: (row) => initiateEditTransaction(row) },
+					{
+						label: "Delete",
+						onClick: (row) => initiateDeleteTransaction(row),
+						variant: "danger",
+					},
+				]}
+			/>
 		</>
 	)
 }

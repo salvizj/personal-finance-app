@@ -7,9 +7,7 @@ const safeString = (message = "Invalid characters detected") =>
 export const transactionSchema = z.object({
 	title: safeString().min(2, "Title must be at least 2 characters"),
 
-	amount: z
-		.number({ message: "Amount must be a number" })
-		.min(1, "Amount must be at least 1"),
+	amount: z.coerce.number().min(1, "Amount must be at least 1"),
 
 	type: z.enum(["income", "expense"], {
 		message: "Type must be income or expense",
