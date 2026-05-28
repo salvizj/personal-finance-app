@@ -49,30 +49,32 @@ const Table = <T extends Record<string, string | number>>({
 					{data.map((row, rowIndex) => (
 						<tr
 							key={rowIndex}
-							className="bg-surface border-b border-border hover:bg-surface-elevated transition-colors"
+							className="bg-surface border-b border-border hover:bg-surface-elevated transition-colors "
 						>
 							{columns.map((col, colIndex) => {
 								const value = row[col]
 								return (
 									<td
 										key={colIndex}
-										className="py-3 px-4 text-content-secondary"
+										className="py-6 px-4 text-content-secondary"
 									>
 										{String(value ?? "")}
 									</td>
 								)
 							})}
 							{actions && (
-								<td className="flex gap-2">
-									{actions.map((action, k) => (
-										<Button
-											key={k}
-											variant={action.variant ?? "primary"}
-											onClick={() => action.onClick(row)}
-										>
-											{action.label}
-										</Button>
-									))}
+								<td className="py-4 px-4">
+									<div className="flex gap-2 items-center">
+										{actions.map((action, k) => (
+											<Button
+												key={k}
+												variant={action.variant ?? "primary"}
+												onClick={() => action.onClick(row)}
+											>
+												{action.label}
+											</Button>
+										))}
+									</div>
 								</td>
 							)}
 						</tr>

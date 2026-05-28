@@ -6,9 +6,22 @@ type ModalProps = {
 	onClose: () => void
 	title?: string
 	children: ReactNode
+	size?: "sm" | "md" | "lg" | "xl"
 }
 
-const Modal = ({ isOpen, onClose, title, children }: ModalProps) => {
+const sizeMap = {
+	sm: "max-w-sm",
+	md: "max-w-md",
+	lg: "max-w-lg",
+	xl: "max-w-xl",
+}
+const Modal = ({
+	isOpen,
+	onClose,
+	title,
+	children,
+	size = "md",
+}: ModalProps) => {
 	if (!isOpen) return null
 
 	return (
@@ -17,7 +30,7 @@ const Modal = ({ isOpen, onClose, title, children }: ModalProps) => {
 			onClick={onClose}
 		>
 			<div
-				className="w-full rounded-lg bg-surface-elevated border border-border shadow-xl"
+				className={`w-full ${sizeMap[size]} rounded-lg bg-surface-elevated border border-border shadow-xl`}
 				onClick={(e) => e.stopPropagation()}
 			>
 				<div className="flex items-center  px-6 py-4 border-b border-border justify-end">
