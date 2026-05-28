@@ -1,7 +1,15 @@
 import type { Theme } from "~/types/types"
 import { ThemeToggler } from "./ThemeToggler"
-import { House, PiggyBank, ReceiptEuro, Wallet } from "lucide-react"
+import {
+	ArrowLeft,
+	ArrowRight,
+	House,
+	PiggyBank,
+	ReceiptEuro,
+	Wallet,
+} from "lucide-react"
 import { NavLink } from "react-router"
+import { useState } from "react"
 
 type SidebarProps = {
 	themeToggle: () => void
@@ -16,25 +24,48 @@ const ROUTES = [
 ]
 
 export const Sidebar = ({ themeToggle }: SidebarProps) => {
+	const [isMinimalToggle, setisMinimalToggle] = useState(false)
+
 	return (
 		<>
-			<aside className="hidden md:flex flex-col justify-between w-64 h-screen  bg-surface-secondary border-r border-border p-6">
+			<aside
+				className={`hidden md:flex flex-col justify-between h-screen bg-surface-secondary border-r border-border p-6 transition-all duration-300 ${
+					isMinimalToggle ? "w-64" : "w-20"
+				}`}
+			>
 				<div>
-					<h2 className="text-lg font-bold text-content">Finance App</h2>
+					<div className="flex flew-row justify-between items-center gap-10">
+						{isMinimalToggle && (
+							<h2 className="text-lg font-bold text-content text-nowrap overflow-hidden">
+								Finance App
+							</h2>
+						)}
+						{isMinimalToggle ? (
+							<ArrowLeft
+								onClick={() => setisMinimalToggle((prev) => !prev)}
+								className="cursor-pointer"
+							/>
+						) : (
+							<ArrowRight
+								onClick={() => setisMinimalToggle((prev) => !prev)}
+								className="cursor-pointer"
+							/>
+						)}
+					</div>
 					<nav className="mt-8">
-						<ul className="space-y-2">
+						<ul className="flex flex-col gap-4 text-nowrap overflow-hidden">
 							{ROUTES.map((route) => (
 								<li key={route.path}>
 									<NavLink
 										to={route.path}
 										className={({ isActive }) =>
-											`flex items-center gap-3 px-3 py-2 rounded-lg transition-colors ${
+											`flex  gap-4 transition-colors ${
 												isActive ? "text-primary" : "text-content-muted"
 											}`
 										}
 									>
 										{route.icon}
-										<span>{route.label}</span>
+										{isMinimalToggle && <span>{route.label}</span>}
 									</NavLink>
 								</li>
 							))}
