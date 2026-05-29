@@ -7,7 +7,7 @@ import { useState } from "react"
 import { useLocalStorage } from "~/hooks/useLocalStorage"
 import type { GoalSchema } from "~/schemas/goalSchema"
 import { GOAL_TABLE_COLUMNS } from "~/constants/constants"
-import type { GoalFilter } from "~/types/types"
+import { ModalType, type GoalFilter } from "~/types/types"
 import { useFilter } from "~/hooks/useFilter"
 import GoalForm from "~/features/goals/components/GoalForm"
 import GoalFilterForm from "~/features/goals/components/GoalFilterForm"
@@ -17,9 +17,7 @@ export function meta({}: Route.MetaArgs) {
 }
 
 export default function Goals() {
-	const [iSGoalFormOpen, setIsGoalFormOpen] = useState(false)
-	const [IsFilterFormIsOpen, setIsFilterFormIsOpen] = useState(false)
-	const [IsConfirmOpen, setIsConfirmOpen] = useState(false)
+	const [openModal, setOpenModal] = useState<ModalType | null>(null)
 
 	const [editingGoal, setEdittingGoal] = useState<GoalSchema | null>(null)
 	const [deletingGoal, setDeletingGoal] = useState<GoalSchema | null>(null)
@@ -31,7 +29,24 @@ export default function Goals() {
 		data: storedValue,
 		filter: [
 			{ param: "name", match: (t, v) => t.name === v },
-			{ param: "target-amount", match: (t, v) => t.targetAmount >= Number(v) },
+			{
+				param: "minTargetAmount",
+				match: (t, v) => t.targetAmount >= Number(v),
+			},
+			{
+				param: "maxTargetAmount",
+				match: (t, v) => t.targetAmount <= Number(v),
+			},
+			{
+				param: "minSavedAmount",
+				match: (t, v) => t.savedAmount >= Number(v),
+			},
+			{
+				param: "maxSavedAmount",
+				match: (t, v) => t.savedAmount <= Number(v),
+			},
+			{ param: "dateFrom", match: (t, v) => new Date(t.date) >= new Date(v) },
+			{ param: "dateTill", match: (t, v) => new Date(t.date) <= new Date(v) },
 			{
 				param: "search",
 				match: (t, v) => t.name.toLowerCase().includes(v.toLowerCase()),
@@ -46,30 +61,33 @@ export default function Goals() {
 			setValue(data)
 		}
 
-		setIsGoalFormOpen(false)
+		setOpenModal(null)
 	}
 
 	const handleGoalDeletion = () => {
-		if (IsConfirmOpen && editingGoal != null) {
-			deleteValue(editingGoal)
+		if (openModal === ModalType.Confirm && deletingGoal != null) {
+			deleteValue(deletingGoal)
 		}
 	}
 
 	const handleFilterFormSubmit = (data: GoalFilter) => {
-		setIsFilterFormIsOpen(false)
+		setOpenModal(null)
 		setFilters(data)
 	}
 
 	const initiateDeleteGoal = (row: GoalSchema) => {
-		setIsConfirmOpen(true)
+		setOpenModal(ModalType.Confirm)
 		setDeletingGoal(row)
 	}
 
 	const initiateEditGoal = (row: GoalSchema) => {
-		setIsGoalFormOpen(true)
+		setOpenModal(ModalType.GoalForm)
 		setEdittingGoal(row)
 	}
 
+	const handleAddSavings = (row: GoalSchema, amount: number) => {
+		updateValue({ ...row, savedAmount: row.savedAmount + amount }, row)
+	}
 	return (
 		<>
 			<div className="flex justify-between mb-8 flex-col md:flex-row gap-4">
@@ -79,7 +97,7 @@ export default function Goals() {
 						{
 							label: "Filter",
 							variant: "outline",
-							onClick: () => setIsFilterFormIsOpen(true),
+							onClick: () => setOpenModal(ModalType.Filter),
 						},
 						{
 							label: "Clear Filters",
@@ -88,26 +106,28 @@ export default function Goals() {
 						},
 						{
 							label: "Add Goals",
-							onClick: () => setIsGoalFormOpen(true),
+							onClick: () => setOpenModal(ModalType.GoalForm),
 						},
 					]}
 				/>
 				<SearchInput search={search} setSearch={setSearch} />
 			</div>
 			<GoalForm
-				isOpen={iSGoalFormOpen}
-				onClose={() => setIsGoalFormOpen(false)}
+				isOpen={openModal === ModalType.GoalForm}
+				onClose={() => {
+					;(setOpenModal(null), setEdittingGoal(null))
+				}}
 				onSubmit={handleGoalFormSubmit}
 				editGoalData={editingGoal}
 			/>
 			<GoalFilterForm
-				isOpen={IsFilterFormIsOpen}
-				onClose={() => setIsFilterFormIsOpen(false)}
+				isOpen={openModal === ModalType.Filter}
+				onClose={() => setOpenModal(null)}
 				onSubmit={handleFilterFormSubmit}
 			/>
 			<ConfirmDialog
-				isOpen={IsConfirmOpen}
-				onClose={() => setIsConfirmOpen(false)}
+				isOpen={openModal === ModalType.Confirm}
+				onClose={() => setOpenModal(null)}
 				onConfirm={handleGoalDeletion}
 				message="This transaction will be permanently deleted."
 			/>
@@ -115,7 +135,25 @@ export default function Goals() {
 				data={filteredData ?? []}
 				columns={GOAL_TABLE_COLUMNS}
 				actions={[
-					{ label: "Edit", onClick: (row) => initiateEditGoal(row) },
+					{
+						label: "+5€",
+						onClick: (row) => handleAddSavings(row, 5),
+						variant: "outline",
+					},
+					{
+						label: "+10€",
+						onClick: (row) => handleAddSavings(row, 10),
+						variant: "outline",
+					},
+					{
+						label: "+100€",
+						onClick: (row) => handleAddSavings(row, 100),
+						variant: "outline",
+					},
+					{
+						label: "Edit",
+						onClick: (row) => initiateEditGoal(row),
+					},
 					{
 						label: "Delete",
 						onClick: (row) => initiateDeleteGoal(row),

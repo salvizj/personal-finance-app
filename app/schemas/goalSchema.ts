@@ -12,6 +12,7 @@ export const goalSchema = z.object({
 	date: safeString()
 		.min(1, "Date is required")
 		.refine((val) => !isNaN(Date.parse(val)), "Invalid date"),
+	savedAmount: z.coerce.number(),
 })
 
 export type GoalSchema = z.infer<typeof goalSchema>

@@ -27,4 +27,9 @@ export const TRANSACTION_TABLE_COLUMNS = [
 	"date",
 	"note",
 ] as const
-export const GOAL_TABLE_COLUMNS = ["name", "targetAmount", "date"] as const
+export const GOAL_TABLE_COLUMNS = [
+	"name",
+	"targetAmount",
+	"date",
+	"savedAmount",
+] as const

@@ -14,6 +14,8 @@ const GoalFilterForm = ({ isOpen, onClose, onSubmit }: GoalFilterFormProps) => {
 	const [name, setName] = useState("")
 	const [minTargetAmount, setMinTargetAmount] = useState("")
 	const [maxTargetAmount, setMaxTargetAmount] = useState("")
+	const [minSavedAmount, setMinSavedAmount] = useState("")
+	const [maxSavedAmount, setMaxSavedAmount] = useState("")
 	const [dateFrom, setDeadlineFrom] = useState("")
 	const [dateTill, setDeadlineTill] = useState("")
 
@@ -28,7 +30,7 @@ const GoalFilterForm = ({ isOpen, onClose, onSubmit }: GoalFilterFormProps) => {
 		},
 		{
 			name: "minTargetAmount",
-			label: "Min Amount",
+			label: "Min Target Amount",
 			type: "text",
 			placeholder: "Amount",
 			value: minTargetAmount,
@@ -36,11 +38,27 @@ const GoalFilterForm = ({ isOpen, onClose, onSubmit }: GoalFilterFormProps) => {
 		},
 		{
 			name: "maxTargetAmount",
-			label: "Max Amount",
+			label: "Max Target Amount",
 			type: "text",
 			placeholder: "Amount",
 			value: maxTargetAmount,
 			onChange: (v) => setMaxTargetAmount(removeNonDigit(v)),
+		},
+		{
+			name: "minSavedAmount",
+			label: "Min Saved Amount",
+			type: "text",
+			placeholder: "Amount",
+			value: minSavedAmount,
+			onChange: (v) => setMinSavedAmount(removeNonDigit(v)),
+		},
+		{
+			name: "maxSavedAmount",
+			label: "Max SAVED Amount",
+			type: "text",
+			placeholder: "Amount",
+			value: maxSavedAmount,
+			onChange: (v) => setMaxSavedAmount(removeNonDigit(v)),
 		},
 		{
 			name: "dateFrom",
@@ -66,6 +84,8 @@ const GoalFilterForm = ({ isOpen, onClose, onSubmit }: GoalFilterFormProps) => {
 						name,
 						minTargetAmount,
 						maxTargetAmount,
+						minSavedAmount,
+						maxSavedAmount,
 						dateFrom,
 						dateTill,
 					})

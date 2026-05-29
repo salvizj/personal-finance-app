@@ -22,6 +22,7 @@ const GoalsForm = ({
 	const [name, setName] = useState("")
 	const [targetAmount, setTargetAmount] = useState("")
 	const [date, setDate] = useState("")
+	const [savedAmount, setSavedAmount] = useState("0")
 	const [validationErrors, setValidationErrors] = useState<
 		Record<string, string>
 	>({})
@@ -29,7 +30,7 @@ const GoalsForm = ({
 	const handleSubmit = (e: React.SubmitEvent<HTMLFormElement>) => {
 		e.preventDefault()
 
-		const formData = { name, targetAmount, date }
+		const formData = { name, targetAmount, date, savedAmount }
 		const result = goalSchema.safeParse(formData)
 
 		if (!result.success) {
@@ -52,6 +53,7 @@ const GoalsForm = ({
 			setName(editGoalData.name)
 			setTargetAmount(String(editGoalData.targetAmount))
 			setDate(editGoalData.date)
+			setSavedAmount(editGoalData.date)
 		}
 	}, [editGoalData])
 
@@ -67,13 +69,23 @@ const GoalsForm = ({
 			error: validationErrors.title,
 		},
 		{
-			name: "amount",
-			label: "Amount",
+			name: "targetAmount",
+			label: "Target Amount",
 			type: "number",
-			placeholder: "Amount",
+			placeholder: "Target Amount",
 			required: true,
 			value: targetAmount,
 			onChange: (v) => setTargetAmount(removeNonDigit(v)),
+			error: validationErrors.amount,
+		},
+		{
+			name: "savedAmount",
+			label: "Saved Amount",
+			type: "number",
+			placeholder: "Saved Amount",
+			required: true,
+			value: savedAmount,
+			onChange: (v) => setSavedAmount(removeNonDigit(v)),
 			error: validationErrors.amount,
 		},
 		{

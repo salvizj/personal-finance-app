@@ -51,6 +51,14 @@ export type GoalFilter = {
 	name?: string
 	minTargetAmount?: string
 	maxTargetAmount?: string
+	minSavedAmount?: string
+	maxSavedAmount?: string
 	dateFrom?: string
 	dateTill?: string
+}
+export enum ModalType {
+	GoalForm = "goalForm",
+	Filter = "filter",
+	Confirm = "confirm",
+	AddSavings = "addSavings",
 }

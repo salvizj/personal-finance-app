@@ -33,8 +33,10 @@ export default function Transactions() {
 		filter: [
 			{ param: "type", match: (t, v) => t.type === v },
 			{ param: "category", match: (t, v) => t.category === v },
-			{ param: "min-amount", match: (t, v) => t.amount >= Number(v) },
-			{ param: "max-amount", match: (t, v) => t.amount <= Number(v) },
+			{ param: "minAmount", match: (t, v) => t.amount >= Number(v) },
+			{ param: "maxAmount", match: (t, v) => t.amount <= Number(v) },
+			{ param: "dateFrom", match: (t, v) => new Date(t.date) >= new Date(v) },
+			{ param: "dateTill", match: (t, v) => new Date(t.date) <= new Date(v) },
 			{
 				param: "search",
 				match: (t, v) => t.title.toLowerCase().includes(v.toLowerCase()),
