@@ -1,4 +1,4 @@
-export const CATEGORIES = [
+export const TRANSACTION_CATEGORIES = [
 	// Income
 	"salary",
 	"freelance",
@@ -18,8 +18,8 @@ export const CATEGORIES = [
 	"education",
 	"other",
 ]
-export const TYPES = ["income", "expense"]
-export const TABLE_COLUMNS = [
+export const TRANSACTION_TYPES = ["income", "expense"]
+export const TRANSACTION_TABLE_COLUMNS = [
 	"title",
 	"type",
 	"category",
@@ -27,3 +27,4 @@ export const TABLE_COLUMNS = [
 	"date",
 	"note",
 ] as const
+export const GOAL_TABLE_COLUMNS = ["name", "targetAmount", "date"] as const

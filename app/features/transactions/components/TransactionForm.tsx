@@ -1,17 +1,23 @@
 import { useEffect, useState } from "react"
-import Button from "~/components/ui/Button"
-import Input from "~/components/ui/Input"
 import Modal from "~/components/ui/Modal"
-import Select from "~/components/ui/Select"
-import { transactionSchema } from "~/schemas/transactionSchema"
-import { CATEGORIES, TYPES } from "../constants/constants"
 import { removeNonDigit } from "~/utils/utils"
+import Form from "~/components/ui/Form"
+import type { FieldConfig } from "~/types/types"
+import {
+	TRANSACTION_CATEGORIES,
+	TRANSACTION_TYPES,
+} from "~/constants/constants"
+import type z from "zod"
+import {
+	transactionSchema,
+	type TransactionSchema,
+} from "~/schemas/transactionSchema"
 
 type TransactionFormProps = {
 	isOpen: boolean
 	onClose: () => void
-	onSubmit: (data: transactionSchema) => void
-	editTransactionData?: transactionSchema | null
+	onSubmit: (data: TransactionSchema) => void
+	editTransactionData?: TransactionSchema | null
 }
 
 const TransactionForm = ({
@@ -38,7 +44,7 @@ const TransactionForm = ({
 
 		if (!result.success) {
 			const fieldErrors = Object.fromEntries(
-				result.error.issues.map((issue) => [
+				result.error.issues.map((issue: z.core.$ZodIssue) => [
 					String(issue.path[0]),
 					issue.message,
 				]),
@@ -62,66 +68,76 @@ const TransactionForm = ({
 		}
 	}, [editTransactionData])
 
+	const fields: FieldConfig[] = [
+		{
+			name: "title",
+			label: "Title",
+			type: "text",
+			placeholder: "Title",
+			required: true,
+			value: title,
+			onChange: setTitle,
+			error: validationErrors.title,
+		},
+		{
+			name: "amount",
+			label: "Amount",
+			type: "number",
+			placeholder: "Amount",
+			required: true,
+			value: amount,
+			onChange: (v) => setAmount(removeNonDigit(v)),
+			error: validationErrors.amount,
+		},
+		{
+			name: "type",
+			label: "Type",
+			type: "select",
+			options: TRANSACTION_TYPES,
+			value: type,
+			onChange: setType,
+			error: validationErrors.type,
+		},
+		{
+			name: "category",
+			label: "Category",
+			type: "select",
+			options: TRANSACTION_CATEGORIES,
+			value: category,
+			onChange: setCategory,
+			error: validationErrors.category,
+		},
+		{
+			name: "date",
+			label: "Date",
+			type: "date",
+			placeholder: "Date",
+			required: true,
+			value: date,
+			onChange: setDate,
+			error: validationErrors.date,
+		},
+		{
+			name: "note",
+			label: "Note",
+			type: "text",
+			placeholder: "Note",
+			required: true,
+			value: note,
+			onChange: setNote,
+			error: validationErrors.note,
+		},
+	]
+
 	return (
 		<Modal isOpen={isOpen} onClose={onClose} title="Add Transaction">
-			<form className="flex flex-col gap-4" onSubmit={handleSubmit}>
-				<Input
-					placeholder="Title"
-					type="text"
-					label="Title"
-					required={true}
-					value={title}
-					onChange={(e) => setTitle(e.target.value)}
-					error={validationErrors.title}
-				/>
-				<Input
-					placeholder="Amount"
-					type="number"
-					label="Amount"
-					required={true}
-					value={amount}
-					onChange={(e) => setAmount(removeNonDigit(e.target.value))}
-					error={validationErrors.amount}
-				/>
-				<Select
-					placeholder="Type"
-					options={TYPES}
-					label={"Type"}
-					value={type}
-					onChange={(e) => setType(e.target.value)}
-					error={validationErrors.type}
-				/>
-
-				<Select
-					placeholder="Category"
-					options={CATEGORIES}
-					label={"Category"}
-					value={category}
-					onChange={(e) => setCategory(e.target.value)}
-					error={validationErrors.category}
-				/>
-				<Input
-					placeholder="Date"
-					type="date"
-					label="Date"
-					required={true}
-					value={date}
-					onChange={(e) => setDate(e.target.value)}
-					error={validationErrors.date}
-				/>
-				<Input
-					placeholder="Note"
-					type="text"
-					label="Note"
-					required={true}
-					value={note}
-					onChange={(e) => setNote(e.target.value)}
-					error={validationErrors.note}
-				/>
-				<Button type="submit">
-					{editTransactionData ? "Edit Transaction" : "Add Transaction"}
-				</Button>
-			</form>
+			<Form
+				fields={fields}
+				onSubmit={handleSubmit}
+				submitLabel={
+					editTransactionData ? "Edit Transaction" : "Add Transaction"
+				}
+			/>
 		</Modal>
 	)
 }

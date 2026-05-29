@@ -8,20 +8,22 @@ type Action<T extends Record<string, string | number>> = {
 }
 
 type TableProps<T extends Record<string, string | number>> = {
-	data: T[] | null
+	data: T[]
 	columns: readonly (keyof T)[]
 	actions?: Action<T>[]
+	noDataText: string
 }
 
 const Table = <T extends Record<string, string | number>>({
 	data,
 	columns,
 	actions,
+	noDataText,
 }: TableProps<T>) => {
-	if (data === null) {
+	if (!data || data.length === 0) {
 		return (
 			<div>
-				<h2>No transaction added yet</h2>
+				<h2>{noDataText}</h2>
 			</div>
 		)
 	}
@@ -36,7 +38,9 @@ const Table = <T extends Record<string, string | number>>({
 								key={i}
 								className="py-3 px-4 font-semibold text-content capitalize"
 							>
-								{String(col)}
+								{String(col)
+									.replace(/([A-Z])/g, " $1")
+									.toLowerCase()}
 							</th>
 						))}
 						{actions && (
@@ -58,7 +62,7 @@ const Table = <T extends Record<string, string | number>>({
 										key={colIndex}
 										className="py-6 px-4 text-content-secondary"
 									>
-										{String(value ?? "")}
+										{String(value)}
 									</td>
 								)
 							})}

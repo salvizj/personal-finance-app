@@ -22,4 +22,4 @@ export const transactionSchema = z.object({
 	note: safeString().optional(),
 })
 
-export type transactionSchema = z.infer<typeof transactionSchema>
+export type TransactionSchema = z.infer<typeof transactionSchema>

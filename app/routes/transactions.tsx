@@ -1,38 +1,48 @@
 import TransactionForm from "~/features/transactions/components/TransactionForm"
 import type { Route } from "./+types/transactions"
-import { useEffect, useState } from "react"
-import Button from "~/components/ui/Button"
-import type { transactionSchema } from "~/schemas/transactionSchema"
+import { useState } from "react"
+import type { TransactionSchema } from "~/schemas/transactionSchema"
 import { useLocalStorage } from "~/hooks/useLocalStorage"
 import Table from "~/components/ui/Table"
-import type { FilterData } from "~/types/types"
-import FilterForm from "~/features/transactions/components/FilterForm"
-import { TABLE_COLUMNS } from "~/features/transactions/constants/constants"
-import { useFilterTransactions } from "~/features/transactions/hooks/useFiltertTransactions"
-import SearchInput from "~/features/transactions/components/SearchInput"
-import TransactionActions from "~/features/transactions/components/TransactionActions"
+import SearchInput from "~/components/SearchInput"
 import ConfirmDialog from "~/components/ConfirmDialog"
+import Actions from "~/components/Actions"
+import { TRANSACTION_TABLE_COLUMNS } from "~/constants/constants"
+import { useFilter } from "~/hooks/useFilter"
+import type { TransactionFilter } from "~/types/types"
+import TransactionFilterForm from "~/features/transactions/components/TransactionFilterForm"
 
 export function meta({}: Route.MetaArgs) {
 	return [{ title: "Personal Finance App" }, { name: "", content: "" }]
 }
 
 export default function Transactions() {
-	const [iSTrransactionFormIsOpem, setIsTransactionFormIsOpen] = useState(false)
+	const [iSTrransactionFormIsOpen, setIsTransactionFormIsOpen] = useState(false)
 	const [IsFilterFormIsOpen, setIsFilterFormIsOpen] = useState(false)
 	const [IsConfirmOpen, setIsConfirmOpen] = useState(false)
 
 	const [editingTransaction, setEdittingTransaction] =
-		useState<transactionSchema | null>(null)
+		useState<TransactionSchema | null>(null)
 	const [deletingTransaction, setDeletingTransaction] =
-		useState<transactionSchema | null>(null)
+		useState<TransactionSchema | null>(null)
 
 	const { storedValue, setValue, deleteValue, updateValue } =
-		useLocalStorage<transactionSchema>("transactions")
-	const { filteredData, setFilters, setSearch, search } =
-		useFilterTransactions(storedValue)
+		useLocalStorage<TransactionSchema>("transactions")
+	const { filteredData, setFilters, setSearch, search } = useFilter({
+		data: storedValue,
+		filter: [
+			{ param: "type", match: (t, v) => t.type === v },
+			{ param: "category", match: (t, v) => t.category === v },
+			{ param: "min-amount", match: (t, v) => t.amount >= Number(v) },
+			{ param: "max-amount", match: (t, v) => t.amount <= Number(v) },
+			{
+				param: "search",
+				match: (t, v) => t.title.toLowerCase().includes(v.toLowerCase()),
+			},
+		],
+	})
 
-	const handleTransactionFormSubmit = (data: transactionSchema) => {
+	const handleTransactionFormSubmit = (data: TransactionSchema) => {
 		if (editingTransaction != null) {
 			updateValue(data, editingTransaction)
 		} else {
@@ -48,40 +58,51 @@ export default function Transactions() {
 		}
 	}
 
-	const handleFilterFormSubmit = (data: FilterData) => {
+	const handleFilterFormSubmit = (data: TransactionFilter) => {
 		setIsFilterFormIsOpen(false)
 		setFilters(data)
 	}
 
-	const initiateDeleteTransaction = (row: transactionSchema) => {
+	const initiateDeleteTransaction = (row: TransactionSchema) => {
 		setIsConfirmOpen(true)
 		setDeletingTransaction(row)
-		console.log("initiate")
 	}
 
-	const initiateEditTransaction = (row: transactionSchema) => {
+	const initiateEditTransaction = (row: TransactionSchema) => {
 		setIsTransactionFormIsOpen(true)
 		setEdittingTransaction(row)
 	}
-
 	return (
 		<>
 			<div className="flex justify-between mb-8 flex-col md:flex-row gap-4">
 				<h1 className="text-xl font-semibold">Transactions</h1>
-				<TransactionActions
-					onFilter={() => setIsFilterFormIsOpen(true)}
-					onClearFilters={() => setFilters(null)}
-					onAddTransaction={() => setIsTransactionFormIsOpen(true)}
+				<Actions
+					actions={[
+						{
+							label: "Filter",
+							variant: "outline",
+							onClick: () => setIsFilterFormIsOpen(true),
+						},
+						{
+							label: "Clear Filters",
+							variant: "outline",
+							onClick: () => setFilters(null),
+						},
+						{
+							label: "Add Transaction",
+							onClick: () => setIsTransactionFormIsOpen(true),
+						},
+					]}
 				/>
 				<SearchInput search={search} setSearch={setSearch} />
 			</div>
 			<TransactionForm
-				isOpen={iSTrransactionFormIsOpem}
+				isOpen={iSTrransactionFormIsOpen}
 				onClose={() => setIsTransactionFormIsOpen(false)}
 				onSubmit={handleTransactionFormSubmit}
 				editTransactionData={editingTransaction}
 			/>
-			<FilterForm
+			<TransactionFilterForm
 				isOpen={IsFilterFormIsOpen}
 				onClose={() => setIsFilterFormIsOpen(false)}
 				onSubmit={handleFilterFormSubmit}
@@ -93,8 +114,8 @@ export default function Transactions() {
 				message="This transaction will be permanently deleted."
 			/>
 			<Table
-				data={filteredData}
-				columns={TABLE_COLUMNS}
+				data={filteredData ?? []}
+				columns={TRANSACTION_TABLE_COLUMNS}
 				actions={[
 					{ label: "Edit", onClick: (row) => initiateEditTransaction(row) },
 					{
@@ -103,6 +124,7 @@ export default function Transactions() {
 						variant: "danger",
 					},
 				]}
+				noDataText="No transactions found."
 			/>
 		</>
 	)
