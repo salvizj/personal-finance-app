@@ -11,6 +11,7 @@ import { ModalType, type GoalFilter } from "~/types/types"
 import { useFilter } from "~/hooks/useFilter"
 import GoalForm from "~/features/goals/components/GoalForm"
 import GoalFilterForm from "~/features/goals/components/GoalFilterForm"
+import CustomAmountForm from "~/features/goals/components/CustomAmountForm"
 
 export function meta({}: Route.MetaArgs) {
 	return [{ title: "Personal Finance App" }, { name: "", content: "" }]
@@ -21,6 +22,9 @@ export default function Goals() {
 
 	const [editingGoal, setEdittingGoal] = useState<GoalSchema | null>(null)
 	const [deletingGoal, setDeletingGoal] = useState<GoalSchema | null>(null)
+	const [customAmountRow, setCustomAmountRow] = useState<GoalSchema | null>(
+		null,
+	)
 
 	const { storedValue, setValue, deleteValue, updateValue } =
 		useLocalStorage<GoalSchema>("goals")
@@ -88,6 +92,20 @@ export default function Goals() {
 	const handleAddSavings = (row: GoalSchema, amount: number) => {
 		updateValue({ ...row, savedAmount: row.savedAmount + amount }, row)
 	}
+
+	const initiateCustomAmount = (row: GoalSchema) => {
+		setCustomAmountRow(row)
+		setOpenModal(ModalType.CustomAmountForm)
+	}
+
+	const handleCustomAmountSubmit = (amount: number) => {
+		if (customAmountRow) {
+			handleAddSavings(customAmountRow, amount)
+		}
+		setCustomAmountRow(null)
+		setOpenModal(null)
+	}
+
 	return (
 		<>
 			<div className="flex justify-between mb-8 flex-col md:flex-row gap-4">
@@ -97,7 +115,7 @@ export default function Goals() {
 						{
 							label: "Filter",
 							variant: "outline",
-							onClick: () => setOpenModal(ModalType.Filter),
+							onClick: () => setOpenModal(ModalType.FilterForm),
 						},
 						{
 							label: "Clear Filters",
@@ -121,9 +139,14 @@ export default function Goals() {
 				editGoalData={editingGoal}
 			/>
 			<GoalFilterForm
-				isOpen={openModal === ModalType.Filter}
+				isOpen={openModal === ModalType.FilterForm}
 				onClose={() => setOpenModal(null)}
 				onSubmit={handleFilterFormSubmit}
+			/>
+			<CustomAmountForm
+				isOpen={openModal === ModalType.CustomAmountForm}
+				onClose={() => setOpenModal(null)}
+				onSubmit={handleCustomAmountSubmit}
 			/>
 			<ConfirmDialog
 				isOpen={openModal === ModalType.Confirm}
@@ -148,6 +171,11 @@ export default function Goals() {
 					{
 						label: "+100€",
 						onClick: (row) => handleAddSavings(row, 100),
+						variant: "outline",
+					},
+					{
+						label: "+custom",
+						onClick: (row) => initiateCustomAmount(row),
 						variant: "outline",
 					},
 					{

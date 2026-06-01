@@ -58,7 +58,7 @@ export type GoalFilter = {
 }
 export enum ModalType {
 	GoalForm = "goalForm",
-	Filter = "filter",
+	FilterForm = "filterForm",
 	Confirm = "confirm",
-	AddSavings = "addSavings",
+	CustomAmountForm = "customAmountForm",
 }
