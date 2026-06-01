@@ -52,17 +52,15 @@ export function Layout({ children }: { children: React.ReactNode }) {
 		</html>
 	)
 }
-
 export default function App() {
 	const initialTheme = useLoaderData<typeof loader>()?.theme ?? "light"
 	const { theme, themeToggle } = useTheme(initialTheme)
-
 	return (
 		<div className="min-h-screen bg-surface text-content">
-			<div className="flex grow">
+			<div className="flex grow flex-row">
 				<Sidebar theme={theme} themeToggle={themeToggle} />
-				<div className="flex flex-col grow">
-					<main className="grow px-6 pt-10 flex flex-col">
+				<div className="flex flex-col grow min-w-0">
+					<main className="grow px-6 pt-10 flex flex-col min-w-0">
 						<Outlet />
 					</main>
 					<Footer />
@@ -71,7 +69,6 @@ export default function App() {
 		</div>
 	)
 }
-
 export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
 	let message = "Oops!"
 	let details = "An unexpected error occurred."

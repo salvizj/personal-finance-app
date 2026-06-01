@@ -12,6 +12,7 @@ import { useFilter } from "~/hooks/useFilter"
 import GoalForm from "~/features/goals/components/GoalForm"
 import GoalFilterForm from "~/features/goals/components/GoalFilterForm"
 import CustomAmountForm from "~/features/goals/components/CustomAmountForm"
+import ProgressLine from "~/components/ProgressBar"
 
 export function meta({}: Route.MetaArgs) {
 	return [{ title: "Personal Finance App" }, { name: "", content: "" }]
@@ -157,6 +158,20 @@ export default function Goals() {
 			<Table
 				data={filteredData ?? []}
 				columns={GOAL_TABLE_COLUMNS}
+				customColumns={[
+					{
+						key: "progress",
+						label: "Progress",
+						render: (row) => (
+							<div style={{ width: 67, height: 67 }}>
+								<ProgressLine
+									value={row.savedAmount}
+									maxValue={row.targetAmount}
+								/>
+							</div>
+						),
+					},
+				]}
 				actions={[
 					{
 						label: "+5€",

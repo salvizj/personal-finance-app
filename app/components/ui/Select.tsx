@@ -32,7 +32,7 @@ const Select = ({
           px-3 py-2 rounded-md border bg-surface-elevated text-content
           focus:outline-none focus:ring-2 focus:ring-primary-light focus:border-primary
           disabled:opacity-50 disabled:cursor-not-allowed
-          transition-colors cursor-pointer
+          transition-colors 
           ${error ? "border-error" : "border-border"}
         `}
 				value={value}
