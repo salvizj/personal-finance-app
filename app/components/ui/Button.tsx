@@ -8,6 +8,7 @@ type ButtonProps = {
 	onClick?: () => void
 	noPadding?: boolean
 	noFocus?: boolean
+	className?: string
 }
 
 const variantClasses = {
@@ -32,6 +33,7 @@ const Button = ({
 	onClick,
 	noPadding = false,
 	noFocus = false,
+	className = "",
 }: ButtonProps) => {
 	const base =
 		"inline-flex items-center justify-center rounded-md font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
@@ -44,7 +46,7 @@ const Button = ({
 		<button
 			type={type}
 			onClick={onClick}
-			className={`${base} ${spacing} ${focus} ${variantClasses[variant]}`}
+			className={`${base} ${spacing} ${focus} ${variantClasses[variant]} ${className}`}
 		>
 			{children}
 		</button>

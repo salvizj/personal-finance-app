@@ -1,5 +1,4 @@
 import { SunMoon } from "lucide-react"
-import type { Theme } from "~/types/types"
 import Button from "./ui/Button"
 
 type ThemeTogglerProps = {
@@ -13,6 +12,7 @@ export const ThemeToggler = ({ themeToggle }: ThemeTogglerProps) => {
 			variant="ghost"
 			noPadding={true}
 			noFocus={true}
+			className="text-content-muted"
 		>
 			<SunMoon />
 		</Button>

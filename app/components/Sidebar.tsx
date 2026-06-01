@@ -90,6 +90,7 @@ export const Sidebar = ({ themeToggle }: SidebarProps) => {
 						<span>{route.label}</span>
 					</NavLink>
 				))}
+				<ThemeToggler themeToggle={themeToggle} />
 			</nav>
 		</>
 	)
