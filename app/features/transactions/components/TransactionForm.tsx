@@ -51,6 +51,7 @@ const TransactionForm = ({
 				]),
 			)
 			setValidationErrors(fieldErrors)
+			console.log("Validation errors:", fieldErrors)
 			return
 		}
 
@@ -75,7 +76,6 @@ const TransactionForm = ({
 			label: "Title",
 			type: "text",
 			placeholder: "Title",
-			required: true,
 			value: title,
 			onChange: setTitle,
 			error: validationErrors.title,
@@ -83,9 +83,8 @@ const TransactionForm = ({
 		{
 			name: "amount",
 			label: "Amount",
-			type: "number",
+			type: "text",
 			placeholder: "Amount",
-			required: true,
 			value: amount,
 			onChange: (v) => setAmount(removeNonDigit(v)),
 			error: validationErrors.amount,
@@ -115,7 +114,6 @@ const TransactionForm = ({
 			label: "Date",
 			type: "date",
 			placeholder: "Date",
-			required: true,
 			value: date,
 			onChange: setDate,
 			error: validationErrors.date,
@@ -125,7 +123,6 @@ const TransactionForm = ({
 			label: "Note",
 			type: "text",
 			placeholder: "Note",
-			required: true,
 			value: note,
 			onChange: setNote,
 			error: validationErrors.note,

@@ -28,6 +28,7 @@ const Form = ({ fields, onSubmit, submitLabel = "Submit" }: FormProps) => {
 							options={field.options ?? []}
 							value={field.value}
 							onChange={(e) => field.onChange(e.target.value)}
+							error={field.error}
 						/>
 					)
 				}
@@ -39,6 +40,7 @@ const Form = ({ fields, onSubmit, submitLabel = "Submit" }: FormProps) => {
 						placeholder={field.placeholder ?? ""}
 						value={field.value}
 						onChange={(e) => field.onChange(e.target.value)}
+						error={field.error}
 					/>
 				)
 			})}

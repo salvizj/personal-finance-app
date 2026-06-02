@@ -33,3 +33,17 @@ export const GOAL_TABLE_COLUMNS = [
 	"date",
 	"savedAmount",
 ] as const
+
+export const COLORS = [
+	"var(--color-blue-300)",
+	"var(--color-orange-300)",
+	"var(--color-purple-300)",
+	"var(--color-yellow-300)",
+	"var(--color-pink-300)",
+	"var(--color-teal-300)",
+	"var(--color-indigo-300)",
+	"var(--color-lime-300)",
+	"var(--color-cyan-300)",
+	"var(--color-red-300)",
+	"var(--color-green-300)",
+]

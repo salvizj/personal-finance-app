@@ -4,13 +4,11 @@ const ProgressBar = ({ value, maxValue }: ProgressBarProps) => {
 	const percent = Math.round(Math.min(value / maxValue, 1) * 100)
 
 	const colorClass =
-		percent >= 100
-			? "bg-green-700"
-			: percent >= 75
-				? "bg-green-500"
-				: percent >= 40
-					? "bg-amber-500"
-					: "bg-red-500"
+		percent >= 75
+			? "bg-green-300"
+			: percent <= 75 && percent >= 50
+				? "bg-amber-300"
+				: "bg-red-300"
 
 	return (
 		<div className="flex flex-col items-center gap-1 w-full min-w-32">

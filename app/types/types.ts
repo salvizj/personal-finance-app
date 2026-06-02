@@ -1,5 +1,6 @@
 import type {
-	TRANSACTION_CATEGORIES,
+	TRANSACTION_INCOME_CATEGORIES,
+	TRANSACTION_EXPENSE_CATEGORIES,
 	TRANSACTION_TYPES,
 } from "~/constants/constants"
 
@@ -8,7 +9,9 @@ export type Column<T> = {
 	header: string
 	key: keyof T
 }
-export type TransactionCategory = (typeof TRANSACTION_CATEGORIES)[number]
+export type TransactionCategory =
+	| (typeof TRANSACTION_INCOME_CATEGORIES)[number]
+	| (typeof TRANSACTION_EXPENSE_CATEGORIES)[number]
 export type TransactionType = (typeof TRANSACTION_TYPES)[number]
 
 export type TransactionFilter = {
@@ -36,7 +39,6 @@ export type FieldConfig = {
 	placeholder?: string
 	options?: string[]
 	value: string
-	required?: boolean
 	error?: string
 	onChange: (value: string) => void
 }

@@ -8,11 +8,11 @@ export const goalSchema = z.object({
 	name: safeString().min(2, "Name must be at least 2 characters"),
 
 	targetAmount: z.coerce.number().min(1, "Target amount must be at least 1"),
+	savedAmount: z.coerce.number().min(0, "Saved amount must be at least 0"),
 
 	date: safeString()
 		.min(1, "Date is required")
 		.refine((val) => !isNaN(Date.parse(val)), "Invalid date"),
-	savedAmount: z.coerce.number(),
 })
 
 export type GoalSchema = z.infer<typeof goalSchema>

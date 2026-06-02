@@ -29,7 +29,7 @@ export const Sidebar = ({ themeToggle }: SidebarProps) => {
 	return (
 		<>
 			<aside
-				className={`hidden md:flex flex-col justify-between h-screen bg-surface-secondary border-r border-border p-6 transition-all duration-300 ${
+				className={`hidden md:flex flex-col justify-between h-auto bg-surface-secondary border-r border-border p-6 transition-all duration-300 min-h-screen ${
 					isMinimalToggle ? "w-64" : "w-20"
 				}`}
 			>
