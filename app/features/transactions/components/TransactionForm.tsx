@@ -4,7 +4,8 @@ import { removeNonDigit } from "~/utils/utils"
 import Form from "~/components/ui/Form"
 import type { FieldConfig } from "~/types/types"
 import {
-	TRANSACTION_CATEGORIES,
+	TRANSACTION_EXPENSE_CATEGORIES,
+	TRANSACTION_INCOME_CATEGORIES,
 	TRANSACTION_TYPES,
 } from "~/constants/constants"
 import type z from "zod"
@@ -102,7 +103,9 @@ const TransactionForm = ({
 			name: "category",
 			label: "Category",
 			type: "select",
-			options: TRANSACTION_CATEGORIES,
+			options: TRANSACTION_INCOME_CATEGORIES.concat(
+				TRANSACTION_EXPENSE_CATEGORIES,
+			),
 			value: category,
 			onChange: setCategory,
 			error: validationErrors.category,

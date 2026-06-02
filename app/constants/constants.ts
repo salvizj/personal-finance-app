@@ -1,15 +1,14 @@
-export const TRANSACTION_CATEGORIES = [
-	// Income
+export const TRANSACTION_INCOME_CATEGORIES = [
 	"salary",
 	"freelance",
 	"investment",
-	// Essentials
+]
+export const TRANSACTION_EXPENSE_CATEGORIES = [
 	"groceries",
 	"housing",
 	"utilities",
 	"transportation",
 	"health",
-	// Lifestyle
 	"food",
 	"entertainment",
 	"shopping",
@@ -18,6 +17,7 @@ export const TRANSACTION_CATEGORIES = [
 	"education",
 	"other",
 ]
+
 export const TRANSACTION_TYPES = ["income", "expense"]
 export const TRANSACTION_TABLE_COLUMNS = [
 	"title",
