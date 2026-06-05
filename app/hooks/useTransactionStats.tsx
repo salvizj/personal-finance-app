@@ -4,7 +4,7 @@ import {
 } from "~/constants/constants"
 import type { TransactionSchema } from "~/schemas/transactionSchema"
 
-export const useReportsStats = (transactions: TransactionSchema[]) => {
+export const useTransactionsStats = (transactions: TransactionSchema[]) => {
 	const categories = TRANSACTION_INCOME_CATEGORIES.concat(
 		TRANSACTION_EXPENSE_CATEGORIES,
 	)

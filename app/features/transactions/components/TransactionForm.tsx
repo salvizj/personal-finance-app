@@ -41,6 +41,7 @@ const TransactionForm = ({
 		e.preventDefault()
 
 		const formData = { title, amount, type, category, date, note }
+		console.log("Form data data :", formData)
 		const result = transactionSchema.safeParse(formData)
 
 		if (!result.success) {
@@ -96,6 +97,7 @@ const TransactionForm = ({
 			options: TRANSACTION_TYPES,
 			value: type,
 			onChange: setType,
+			placeholder: "Select type",
 			error: validationErrors.type,
 		},
 		{
@@ -107,6 +109,7 @@ const TransactionForm = ({
 			),
 			value: category,
 			onChange: setCategory,
+			placeholder: "Select category",
 			error: validationErrors.category,
 		},
 		{

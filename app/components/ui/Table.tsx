@@ -19,6 +19,7 @@ type TableProps<T extends Record<string, string | number>> = {
 	actions?: Action<T>[]
 	customColumns?: Column<T>[]
 	noDataText: string
+	rowLimit?: number
 }
 
 const Table = <T extends Record<string, string | number>>({
@@ -27,6 +28,7 @@ const Table = <T extends Record<string, string | number>>({
 	actions,
 	noDataText,
 	customColumns,
+	rowLimit,
 }: TableProps<T>) => {
 	if (!data || data.length === 0) {
 		return (
@@ -63,7 +65,7 @@ const Table = <T extends Record<string, string | number>>({
 				</thead>
 
 				<tbody>
-					{data.map((row, rowIndex) => (
+					{data.slice(0, rowLimit ?? data.length).map((row, rowIndex) => (
 						<tr
 							key={rowIndex}
 							className="bg-surface border-b border-border hover:bg-surface-elevated transition-colors "

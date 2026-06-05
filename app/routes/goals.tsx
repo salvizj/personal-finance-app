@@ -13,6 +13,8 @@ import GoalForm from "~/features/goals/components/GoalForm"
 import GoalFilterForm from "~/features/goals/components/GoalFilterForm"
 import CustomAmountForm from "~/features/goals/components/CustomAmountForm"
 import ProgressLine from "~/components/ProgressBar"
+import Button from "~/components/ui/Button"
+import { handleCSVDownload } from "~/utils/csv"
 
 export function meta({}: Route.MetaArgs) {
 	return [{ title: "Personal Finance App" }, { name: "", content: "" }]
@@ -129,7 +131,15 @@ export default function Goals() {
 						},
 					]}
 				/>
-				<SearchInput search={search} setSearch={setSearch} />
+				<SearchInput search={search} setSearch={setSearch} />{" "}
+			</div>
+			<div className="flex justify-end mb-4">
+				<Button
+					variant="outline"
+					onClick={() => handleCSVDownload(filteredData ?? [], "goals.csv")}
+				>
+					Export CSV
+				</Button>
 			</div>
 			<GoalForm
 				isOpen={openModal === ModalType.GoalForm}

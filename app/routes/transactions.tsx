@@ -11,6 +11,8 @@ import { TRANSACTION_TABLE_COLUMNS } from "~/constants/constants"
 import { useFilter } from "~/hooks/useFilter"
 import type { TransactionFilter } from "~/types/types"
 import TransactionFilterForm from "~/features/transactions/components/TransactionFilterForm"
+import Button from "~/components/ui/Button"
+import { handleCSVDownload } from "~/utils/csv"
 
 export function meta({}: Route.MetaArgs) {
 	return [{ title: "Personal Finance App" }, { name: "", content: "" }]
@@ -43,7 +45,6 @@ export default function Transactions() {
 			},
 		],
 	})
-
 	const handleTransactionFormSubmit = (data: TransactionSchema) => {
 		if (editingTransaction != null) {
 			updateValue(data, editingTransaction)
@@ -97,6 +98,16 @@ export default function Transactions() {
 					]}
 				/>
 				<SearchInput search={search} setSearch={setSearch} />
+			</div>
+			<div className="flex justify-end mb-4">
+				<Button
+					variant="outline"
+					onClick={() =>
+						handleCSVDownload(filteredData ?? [], "transactions.csv")
+					}
+				>
+					Export CSV
+				</Button>
 			</div>
 			<TransactionForm
 				isOpen={iSTrransactionFormIsOpen}
