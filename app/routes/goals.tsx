@@ -12,9 +12,9 @@ import { useFilter } from "~/hooks/useFilter"
 import GoalForm from "~/features/goals/components/GoalForm"
 import GoalFilterForm from "~/features/goals/components/GoalFilterForm"
 import CustomAmountForm from "~/features/goals/components/CustomAmountForm"
-import ProgressLine from "~/components/ProgressBar"
 import Button from "~/components/ui/Button"
 import { handleCSVDownload } from "~/utils/csv"
+import ProgressBar from "~/components/ProgressBar"
 
 export function meta({}: Route.MetaArgs) {
 	return [{ title: "Personal Finance App" }, { name: "", content: "" }]
@@ -174,7 +174,7 @@ export default function Goals() {
 						label: "Progress",
 						render: (row) => (
 							<div style={{ width: 67, height: 67 }}>
-								<ProgressLine
+								<ProgressBar
 									value={row.savedAmount}
 									maxValue={row.targetAmount}
 								/>
@@ -213,7 +213,7 @@ export default function Goals() {
 						variant: "danger",
 					},
 				]}
-				noDataText="No goals set yet."
+				noDataText="No goals set yet. Start by creating a new goal!"
 			/>
 		</>
 	)

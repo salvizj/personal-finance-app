@@ -1,3 +1,3 @@
 export const removeNonDigit = (input: string) => {
-	return input.replace(/\D/g, "")
+	return input.replace(/[^\d.]/g, "")
 }

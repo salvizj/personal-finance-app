@@ -1,6 +1,6 @@
 export const Footer = () => {
 	return (
-		<footer className="p-4 text-center text-sm">
+		<footer className="p-4 text-center text-sm text-content-secondary">
 			&copy; {new Date().getFullYear()} Personal Finance App. All rights
 			reserved.
 		</footer>
