@@ -8,37 +8,37 @@
   --font-sans: "Chivo", ui-sans-serif, system-ui, sans-serif,
     "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
 
-  --color-primary: #7c3aed;
-  --color-primary-light: #a78bfa;
-  --color-secondary: #b14bd8;
-  --color-accent: #db2777;
-  --color-surface: #faf7fd;
-  --color-surface-secondary: #f2ebfa;
+  --color-primary: #2f7d52;
+  --color-primary-light: #6fb98a;
+  --color-secondary: #7d9a4f;
+  --color-accent: #bf5a36;
+  --color-surface: #f7f4ec;
+  --color-surface-secondary: #eef0e3;
   --color-surface-elevated: #ffffff;
-  --color-content: #1f1430;
-  --color-content-secondary: #4a3a5e;
-  --color-content-muted: #8b7a9e;
-  --color-success: #15916b;
+  --color-content: #1e2a1c;
+  --color-content-secondary: #3f4d39;
+  --color-content-muted: #7c8a72;
+  --color-success: #2f8a52;
   --color-warning: #c77a14;
-  --color-error: #d23f57;
-  --color-border: #e6dcf0;
+  --color-error: #c0392b;
+  --color-border: #dde0cf;
 }
 
 .dark {
-  --color-primary: #a06bff;
-  --color-primary-light: #c3a3ff;
-  --color-secondary: #d07bf0;
-  --color-accent: #ff7ac0;
-  --color-surface: #120a1e;
-  --color-surface-secondary: #1b1130;
-  --color-surface-elevated: #271842;
-  --color-content: #f1e9f8;
-  --color-content-secondary: #c5b3d8;
-  --color-content-muted: #8a779e;
-  --color-success: #56cc9d;
+  --color-primary: #6fbf86;
+  --color-primary-light: #9ad9aa;
+  --color-secondary: #a9c46f;
+  --color-accent: #e0865f;
+  --color-surface: #11160f;
+  --color-surface-secondary: #1a2116;
+  --color-surface-elevated: #232d1d;
+  --color-content: #eef2e6;
+  --color-content-secondary: #c3cfb6;
+  --color-content-muted: #7e8a72;
+  --color-success: #6fc98a;
   --color-warning: #f4b860;
-  --color-error: #f0667f;
-  --color-border: #332247;
+  --color-error: #f0786a;
+  --color-border: #2c3826;
 }
 
 h1,
