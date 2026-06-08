@@ -90,7 +90,12 @@ export const Sidebar = ({ themeToggle }: SidebarProps) => {
 						<span>{route.label}</span>
 					</NavLink>
 				))}
-				<ThemeToggler themeToggle={themeToggle} />
+				<div className="px-4 flex flex-col justify-center">
+					<ThemeToggler themeToggle={themeToggle} />
+					<p className="flex flex-col items-center gap-1 px-3 py-1 text-xs text-content-muted">
+						Theme
+					</p>
+				</div>
 			</nav>
 		</>
 	)

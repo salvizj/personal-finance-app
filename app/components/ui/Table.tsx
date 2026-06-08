@@ -39,7 +39,7 @@ const Table = <T extends Record<string, string | number>>({
 	}
 
 	return (
-		<div className="w-full overflow-x-auto">
+		<div className="w-full overflow-x-auto mb-4">
 			<table className="min-w-full border-collapse table-fixed">
 				<thead>
 					<tr className="bg-surface-secondary border-b border-border text-left ">

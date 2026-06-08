@@ -41,7 +41,6 @@ const TransactionForm = ({
 		e.preventDefault()
 
 		const formData = { title, amount, type, category, date, note }
-		console.log("Form data data :", formData)
 		const result = transactionSchema.safeParse(formData)
 
 		if (!result.success) {
@@ -52,7 +51,6 @@ const TransactionForm = ({
 				]),
 			)
 			setValidationErrors(fieldErrors)
-			console.log("Validation errors:", fieldErrors)
 			return
 		}
 
