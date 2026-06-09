@@ -7,7 +7,7 @@ import { useState } from "react"
 import { useLocalStorage } from "~/hooks/useLocalStorage"
 import type { GoalSchema } from "~/schemas/goalSchema"
 import { GOAL_TABLE_COLUMNS } from "~/constants/constants"
-import { ModalType, type GoalFilter } from "~/types/types"
+import { ModalType } from "~/types/types"
 import { useFilter } from "~/hooks/useFilter"
 import GoalForm from "~/features/goals/components/GoalForm"
 import GoalFilterForm from "~/features/goals/components/GoalFilterForm"
@@ -15,6 +15,7 @@ import CustomAmountForm from "~/features/goals/components/CustomAmountForm"
 import Button from "~/components/ui/Button"
 import { handleCSVDownload } from "~/utils/csv"
 import ProgressBar from "~/components/ProgressBar"
+import type { GoalFilterSchema } from "~/schemas/goalFilterSchema"
 
 export function meta({}: Route.MetaArgs) {
 	return [{ title: "Personal Finance App" }, { name: "", content: "" }]
@@ -77,7 +78,7 @@ export default function Goals() {
 		}
 	}
 
-	const handleFilterFormSubmit = (data: GoalFilter) => {
+	const handleFilterFormSubmit = (data: GoalFilterSchema) => {
 		setOpenModal(null)
 		setFilters(data)
 	}
@@ -131,7 +132,7 @@ export default function Goals() {
 						},
 					]}
 				/>
-				<SearchInput search={search} setSearch={setSearch} />{" "}
+				<SearchInput search={search} setSearch={setSearch} />
 			</div>
 			<div className="flex justify-end mb-4">
 				<Button

@@ -14,16 +14,6 @@ export type TransactionCategory =
 	| (typeof TRANSACTION_EXPENSE_CATEGORIES)[number]
 export type TransactionType = (typeof TRANSACTION_TYPES)[number]
 
-export type TransactionFilter = {
-	type?: TransactionType | ""
-	category?: TransactionCategory | ""
-	minAmount?: string
-	maxAmount?: string
-	dateFrom?: string
-	dateTill?: string
-	search?: string
-}
-
 export type Variant =
 	| "primary"
 	| "secondary"
@@ -49,15 +39,6 @@ export type Action = {
 	variant?: "primary" | "outline" | "danger"
 }
 
-export type GoalFilter = {
-	name?: string
-	minTargetAmount?: string
-	maxTargetAmount?: string
-	minSavedAmount?: string
-	maxSavedAmount?: string
-	dateFrom?: string
-	dateTill?: string
-}
 export enum ModalType {
 	GoalForm = "goalForm",
 	FilterForm = "filterForm",

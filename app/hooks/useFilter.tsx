@@ -14,7 +14,9 @@ export const useFilter = <T,>({ data, filter }: UseFilterProps<T>) => {
 	const [searchParams, setSearchParams] = useSearchParams()
 
 	const search = searchParams.get("search") ?? ""
-	const setFilters = (filterData: Record<string, string> | null) => {
+	const setFilters = (
+		filterData: Record<string, string | number | undefined> | null,
+	) => {
 		if (filterData === null) {
 			setSearchParams({})
 			return
@@ -22,7 +24,7 @@ export const useFilter = <T,>({ data, filter }: UseFilterProps<T>) => {
 		const params = new URLSearchParams(searchParams)
 		filter.forEach(({ param }) => {
 			const value = filterData[param]
-			if (value) params.set(param, value)
+			if (value !== undefined && value !== "") params.set(param, String(value))
 			else params.delete(param)
 		})
 		setSearchParams(params)

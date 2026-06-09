@@ -9,18 +9,18 @@ import ConfirmDialog from "~/components/ConfirmDialog"
 import Actions from "~/components/Actions"
 import { TRANSACTION_TABLE_COLUMNS } from "~/constants/constants"
 import { useFilter } from "~/hooks/useFilter"
-import type { TransactionFilter } from "~/types/types"
 import TransactionFilterForm from "~/features/transactions/components/TransactionFilterForm"
 import Button from "~/components/ui/Button"
 import { handleCSVDownload } from "~/utils/csv"
+import type { TransactionFilterSchema } from "~/schemas/transactionFilterSchema"
 
 export function meta({}: Route.MetaArgs) {
 	return [{ title: "Personal Finance App" }, { name: "", content: "" }]
 }
 
 export default function Transactions() {
-	const [iSTrransactionFormIsOpen, setIsTransactionFormIsOpen] = useState(false)
-	const [IsFilterFormIsOpen, setIsFilterFormIsOpen] = useState(false)
+	const [iSTransactionFormOpen, setIsTransactionFormOpen] = useState(false)
+	const [IsFilterFormOpen, setIsFilterFormOpen] = useState(false)
 	const [IsConfirmOpen, setIsConfirmOpen] = useState(false)
 
 	const [editingTransaction, setEdittingTransaction] =
@@ -52,7 +52,7 @@ export default function Transactions() {
 			setValue(data)
 		}
 
-		setIsTransactionFormIsOpen(false)
+		setIsTransactionFormOpen(false)
 	}
 
 	const handleTransationDeletion = () => {
@@ -61,8 +61,8 @@ export default function Transactions() {
 		}
 	}
 
-	const handleFilterFormSubmit = (data: TransactionFilter) => {
-		setIsFilterFormIsOpen(false)
+	const handleFilterFormSubmit = (data: TransactionFilterSchema) => {
+		setIsFilterFormOpen(false)
 		setFilters(data)
 	}
 
@@ -72,7 +72,7 @@ export default function Transactions() {
 	}
 
 	const initiateEditTransaction = (row: TransactionSchema) => {
-		setIsTransactionFormIsOpen(true)
+		setIsTransactionFormOpen(true)
 		setEdittingTransaction(row)
 	}
 	return (
@@ -84,7 +84,7 @@ export default function Transactions() {
 						{
 							label: "Filter",
 							variant: "outline",
-							onClick: () => setIsFilterFormIsOpen(true),
+							onClick: () => setIsFilterFormOpen(true),
 						},
 						{
 							label: "Clear Filters",
@@ -93,7 +93,7 @@ export default function Transactions() {
 						},
 						{
 							label: "Add Transaction",
-							onClick: () => setIsTransactionFormIsOpen(true),
+							onClick: () => setIsTransactionFormOpen(true),
 						},
 					]}
 				/>
@@ -110,14 +110,14 @@ export default function Transactions() {
 				</Button>
 			</div>
 			<TransactionForm
-				isOpen={iSTrransactionFormIsOpen}
-				onClose={() => setIsTransactionFormIsOpen(false)}
+				isOpen={iSTransactionFormOpen}
+				onClose={() => setIsTransactionFormOpen(false)}
 				onSubmit={handleTransactionFormSubmit}
 				editTransactionData={editingTransaction}
 			/>
 			<TransactionFilterForm
-				isOpen={IsFilterFormIsOpen}
-				onClose={() => setIsFilterFormIsOpen(false)}
+				isOpen={IsFilterFormOpen}
+				onClose={() => setIsFilterFormOpen(false)}
 				onSubmit={handleFilterFormSubmit}
 			/>
 			<ConfirmDialog
