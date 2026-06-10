@@ -7,6 +7,13 @@ type DonutChartProps = {
 }
 
 const DonutChart = ({ data, height }: DonutChartProps) => {
+	if (!data || data.length === 0) {
+		return (
+			<div>
+				<h2>No data yet to show.</h2>
+			</div>
+		)
+	}
 	return (
 		<ResponsiveContainer width="100%" height={height || 240}>
 			<PieChart>

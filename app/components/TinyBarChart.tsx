@@ -15,6 +15,13 @@ type TinyBarChartProps = {
 }
 
 const TinyBarChart = ({ data, height }: TinyBarChartProps) => {
+	if (!data || data.length === 0) {
+		return (
+			<div>
+				<h2>No data yet to show.</h2>
+			</div>
+		)
+	}
 	return (
 		<ResponsiveContainer width="100%" height={height || 240}>
 			<BarChart layout="vertical" data={data}>
