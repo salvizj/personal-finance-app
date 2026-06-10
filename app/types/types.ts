@@ -25,7 +25,7 @@ export type Variant =
 export type FieldConfig = {
 	name: string
 	label: string
-	type: "text" | "number" | "select" | "date"
+	type: "text" | "number" | "select" | "date" | "email"
 	placeholder?: string
 	options?: string[]
 	value: string
