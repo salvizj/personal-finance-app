@@ -10,6 +10,7 @@ import {
 } from "lucide-react"
 import { NavLink } from "react-router"
 import { useState } from "react"
+import Button from "./ui/Button"
 
 type SidebarProps = {
 	themeToggle: () => void
@@ -30,27 +31,26 @@ export const Sidebar = ({ themeToggle }: SidebarProps) => {
 		<>
 			<aside
 				className={`hidden md:flex flex-col justify-between sticky top-0 h-screen bg-surface-secondary border-r border-border p-6 transition-all duration-300 ${
-					isMinimalToggle ? "w-64" : "w-20"
+					isMinimalToggle ? "w-20" : "w-64"
 				}`}
 			>
 				<div>
 					<div className="flex flew-row justify-between items-center gap-10">
-						{isMinimalToggle && (
+						{!isMinimalToggle && (
 							<h2 className="text-lg font-bold text-content text-nowrap overflow-hidden">
 								Finance App
 							</h2>
 						)}
-						{isMinimalToggle ? (
-							<ArrowLeft
-								onClick={() => setisMinimalToggle((prev) => !prev)}
-								className="cursor-pointer"
-							/>
-						) : (
-							<ArrowRight
-								onClick={() => setisMinimalToggle((prev) => !prev)}
-								className="cursor-pointer"
-							/>
-						)}
+						<Button
+							onClick={() => setisMinimalToggle((prev) => !prev)}
+							aria-label={
+								isMinimalToggle ? "expand-sidebar " : "collapse-sidebar"
+							}
+							variant="ghost"
+							noPadding={true}
+						>
+							{isMinimalToggle ? <ArrowRight /> : <ArrowLeft />}
+						</Button>
 					</div>
 					<nav className="mt-8">
 						<ul className="flex flex-col gap-4 text-nowrap overflow-hidden">
@@ -65,7 +65,7 @@ export const Sidebar = ({ themeToggle }: SidebarProps) => {
 										}
 									>
 										{route.icon}
-										{isMinimalToggle && <span>{route.label}</span>}
+										{!isMinimalToggle && <span>{route.label}</span>}
 									</NavLink>
 								</li>
 							))}

@@ -11,16 +11,16 @@
   --color-primary-light: #6b6597;
   --color-secondary: #3c4059;
   --color-accent: #b06a3c;
-  --color-surface: #f2dfce;
-  --color-surface-secondary: #e7d4c1;
-  --color-surface-elevated: #fbf4ec;
+  --color-surface: #faf7f3;
+  --color-surface-secondary: #f1ebe3;
+  --color-surface-elevated: #ffffff;
   --color-content: #141826;
   --color-content-secondary: #3c4059;
   --color-content-muted: #6f7186;
   --color-success: #2f8a52;
   --color-warning: #b97d1a;
   --color-error: #c0392b;
-  --color-border: #ddc9b4;
+  --color-border: #e9e0d5;
 }
 
 .dark {
