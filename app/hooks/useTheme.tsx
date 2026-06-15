@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react"
-import { getCookie, setCookie } from "~/utils/cookie"
+import { setCookie } from "~/utils/cookie"
 
 type Theme = "light" | "dark"
 

@@ -137,7 +137,7 @@ export default function Transactions() {
 						variant: "danger",
 					},
 				]}
-				noDataText="No transactions found."
+				noDataText="No transactiong added yet. Start by adding a new transaction!"
 			/>
 		</>
 	)
