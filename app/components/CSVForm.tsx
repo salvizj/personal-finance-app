@@ -23,9 +23,8 @@ const CSVForm = ({ isOpen, onClose, onSubmit }: CSVFormProps) => {
 	const fields: FieldConfig[] = [
 		{
 			name: "file",
-			label: "CSVFile",
+			label: "CSV",
 			type: "file",
-			placeholder: "CSVFile",
 			onChange: setFile,
 		},
 	]
