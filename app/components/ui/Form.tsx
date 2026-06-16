@@ -32,17 +32,29 @@ const Form = ({ fields, onSubmit, submitLabel = "Submit" }: FormProps) => {
 						/>
 					)
 				}
-				return (
-					<Input
-						key={field.name}
-						label={field.label}
-						type={field.type}
-						placeholder={field.placeholder ?? ""}
-						value={field.value}
-						onChange={(e) => field.onChange(e.target.value)}
-						error={field.error}
-					/>
-				)
+				if (field.type === "file") {
+					return (
+						<Input
+							key={field.name}
+							label={field.label}
+							type={field.type}
+							placeholder={field.placeholder ?? ""}
+							onChange={(e) => field.onChange(e.target.files?.[0] ?? null)}
+							error={field.error}
+						/>
+					)
+				} else
+					return (
+						<Input
+							key={field.name}
+							label={field.label}
+							type={field.type}
+							placeholder={field.placeholder ?? ""}
+							value={field.value}
+							onChange={(e) => field.onChange(e.target.value)}
+							error={field.error}
+						/>
+					)
 			})}
 			<Button type="submit">{submitLabel}</Button>
 		</form>

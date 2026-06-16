@@ -14,9 +14,11 @@ export function useLocalStorage<T>(key: string) {
 
 	const setValue = (value: T) => {
 		try {
-			const updated = [...(storedValue ?? []), value]
-			setStoredValue(updated)
-			localStorage.setItem(key, JSON.stringify(updated))
+			setStoredValue((prev) => {
+				const updated = [...(prev ?? []), value]
+				localStorage.setItem(key, JSON.stringify(updated))
+				return updated
+			})
 		} catch (error) {
 			console.error(error)
 		}

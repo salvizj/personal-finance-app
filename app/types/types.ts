@@ -22,16 +22,32 @@ export type Variant =
 	| "ghost"
 	| "danger"
 
-export type FieldConfig = {
+type BaseField = {
 	name: string
 	label: string
-	type: "text" | "number" | "select" | "date" | "email"
 	placeholder?: string
-	options?: string[]
-	value: string
 	error?: string
+}
+
+type TextFieldConfig = BaseField & {
+	type: "text" | "email" | "date" | "number"
+	value: string
 	onChange: (value: string) => void
 }
+
+type SelectFieldConfig = BaseField & {
+	type: "select"
+	options: string[]
+	value: string
+	onChange: (value: string) => void
+}
+
+type FileFieldConfig = BaseField & {
+	type: "file"
+	onChange: (file: File | null) => void
+}
+
+export type FieldConfig = TextFieldConfig | SelectFieldConfig | FileFieldConfig
 
 export type Action = {
 	label: string

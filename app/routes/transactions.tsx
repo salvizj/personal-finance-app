@@ -13,6 +13,7 @@ import TransactionFilterForm from "~/features/transactions/components/Transactio
 import Button from "~/components/ui/Button"
 import { handleCSVDownload } from "~/utils/csv"
 import type { TransactionFilterSchema } from "~/schemas/transactionFilterSchema"
+import CSVForm from "~/components/CSVForm"
 
 export function meta({}: Route.MetaArgs) {
 	return [{ title: "Personal Finance App" }, { name: "", content: "" }]
@@ -22,6 +23,7 @@ export default function Transactions() {
 	const [iSTransactionFormOpen, setIsTransactionFormOpen] = useState(false)
 	const [IsFilterFormOpen, setIsFilterFormOpen] = useState(false)
 	const [IsConfirmOpen, setIsConfirmOpen] = useState(false)
+	const [isImportCSVFormOpen, SetIsImportCSVFormOpen] = useState(false)
 
 	const [editingTransaction, setEdittingTransaction] =
 		useState<TransactionSchema | null>(null)
@@ -75,6 +77,47 @@ export default function Transactions() {
 		setIsTransactionFormOpen(true)
 		setEdittingTransaction(row)
 	}
+
+	const handleCSVFormSubmit = async (data: File) => {
+		const text = await data.text()
+		const lines = text.trim().split("\n")
+		let rows: {
+			title: string
+			amount: number
+			type: "income" | "expense"
+			category: string
+			date: string
+			note: string
+		}[] = []
+
+		try {
+			rows = lines.slice(1).map((line) => {
+				const values = line.split(",")
+				const type = values[2]
+
+				if (type !== "income" && type !== "expense") {
+					throw new Error(`Invalid transaction type: "${type}"`)
+				}
+				return {
+					title: values[0],
+					amount: Number(values[1]),
+					type: type,
+					category: values[3],
+					date: values[4],
+					note: values[5] ?? "",
+				}
+			})
+		} catch {
+			console.error("Failed to parse CSV")
+			return
+		}
+		SetIsImportCSVFormOpen(false)
+
+		rows.forEach((row) => {
+			setValue(row)
+		})
+	}
+
 	return (
 		<>
 			<div className="flex justify-between mb-8 flex-col md:flex-row gap-4">
@@ -99,7 +142,7 @@ export default function Transactions() {
 				/>
 				<SearchInput search={search} setSearch={setSearch} />
 			</div>
-			<div className="flex justify-end mb-4">
+			<div className="flex justify-end mb-4 gap-2">
 				<Button
 					variant="outline"
 					onClick={() =>
@@ -107,6 +150,9 @@ export default function Transactions() {
 					}
 				>
 					Export CSV
+				</Button>
+				<Button variant="outline" onClick={() => SetIsImportCSVFormOpen(true)}>
+					Import CSV
 				</Button>
 			</div>
 			<TransactionForm
@@ -126,6 +172,11 @@ export default function Transactions() {
 				onConfirm={handleTransationDeletion}
 				message="This transaction will be permanently deleted."
 			/>
+			<CSVForm
+				isOpen={isImportCSVFormOpen}
+				onClose={() => SetIsImportCSVFormOpen(false)}
+				onSubmit={handleCSVFormSubmit}
+			></CSVForm>
 			<Table
 				data={filteredData ?? []}
 				columns={TRANSACTION_TABLE_COLUMNS}
