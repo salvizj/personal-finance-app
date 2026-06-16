@@ -29,3 +29,15 @@ export const handleCSVDownload = <T extends object>(
 	const csv = toCsv(data, columns)
 	downloadCsv(csv, filename)
 }
+export const isCsv = (file: File) => {
+	if (!file) return false
+	const validTypes = [
+		"text/csv",
+		"application/vnd.ms-excel",
+		"application/csv",
+		"",
+	]
+	const hasValidType = validTypes.includes(file.type)
+	const hasValidExtension = file.name.toLowerCase().endsWith(".csv")
+	return hasValidType && hasValidExtension
+}
